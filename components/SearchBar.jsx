@@ -1,7 +1,7 @@
 import React from 'react';
-import { Platform, StyleSheet, TextInput, View } from 'react-native';
+import { Platform, StyleSheet, TextInput, View, Text } from 'react-native';
 
-export default function SearchBar({ value, onChangeText, placeholder }) {
+export default function SearchBar({ value, onChangeText, placeholder, helperText }) {
   return (
     <View style={styles.container}>
       <TextInput
@@ -14,6 +14,10 @@ export default function SearchBar({ value, onChangeText, placeholder }) {
         android: '#888',
   })}
       />
+      {/* Show helper text when value is empty */}
+      {helperText && !value && (
+        <Text style={styles.helperText}>{helperText}</Text>
+      )}
     </View>
   );
 }
@@ -29,4 +33,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 24,
   },
+  helperText: {
+    marginTop: 4,
+    fontSize: 10,
+    color: '#666',
+    },
 });

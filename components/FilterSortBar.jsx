@@ -40,13 +40,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#1f2024',
     fontWeight: 400,
-    fontFamily: "Inter",
   },
-  dot: {
+  
+  // Green dot on filter
+  dot: {               
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#578600', // Green dot on filter?
+    backgroundColor: '#578600', 
     marginLeft: 6,
   },
 });

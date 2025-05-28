@@ -61,7 +61,8 @@ export default function HomeScreen() {
           <SearchBar
             value={searchQuery}
             onChangeText={setSearchQuery}
-            placeholder="Search for cafes nearby"
+            placeholder="What would you like to drink?"
+            helperText="Try searching for drinks like Latte, Matcha..."
           />
           <FilterSortBar
             onSortPress={handleSort}
