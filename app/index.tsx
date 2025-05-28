@@ -1,6 +1,9 @@
-import { StyleSheet, View } from "react-native";
-/*import { SafeAreaView } from "react-native-safe-area-context";*/
 import CustomButton from '@/components/CustomButton';
+import FilterSortBar from '@/components/FilterSortBar';
+import SearchBar from '@/components/SearchBar';
+import React, { useState } from 'react';
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 /*
 export default function Index() {
@@ -31,27 +34,66 @@ const styles = StyleSheet.create({
 */
 
 export default function HomeScreen() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filtersActive, setFiltersActive] = useState(false);
+
+  const handleSort = () => {
+    alert('Sort pressed!');
+  };
+
+  const handleFilter = () => {
+    setFiltersActive(!filtersActive);
+    alert('Filter added!');
+  };
+
+  const handleMap = () => {
+    alert('Map pressed!');
+  };
+
   const handleOrder = () => {
     alert('Checking out!');
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.topContainer}>
+          <SearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search for cafes nearby"
+          />
+          <FilterSortBar
+            onSortPress={handleSort}
+            onFilterPress={handleFilter}
+            onMapPress={handleMap}
+            filtersActive={filtersActive}
+          />
+        </View>
 
-
-      <View style={styles.bottomContainer}>
-        <CustomButton text="Checkout" color="#578600" onPress={handleOrder} />
+        <View style={styles.bottomContainer}>
+          <CustomButton text="Checkout" color="#578600" onPress={handleOrder} />
+        </View>
       </View>
-    </View>
-  );
-}
+    </SafeAreaView>
+    );
+  }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
   },
+
+  topContainer: {
+    flex: 1,
+    gap: 19,
+  },
+
   bottomContainer : {
     padding: 24,
   },
-})
+});
