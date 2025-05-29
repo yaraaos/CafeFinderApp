@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -7,6 +8,7 @@ export default function FilterSortBar({
   onMapPress,
   filtersActive,
 }) {
+    const router = useRouter();
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={onSortPress}>
@@ -18,8 +20,8 @@ export default function FilterSortBar({
         {filtersActive && <View style={styles.dot} />}
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={onMapPress}>
-        <Text style={styles.text}>Map</Text>
+      <TouchableOpacity onPress={() => router.push('/map')}>
+        <Text>Map</Text>
       </TouchableOpacity>
     </View>
   );

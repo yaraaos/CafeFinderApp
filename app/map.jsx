@@ -1,17 +1,48 @@
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Alert } from 'react-native';
+import * as Location from 'expo-location';
 import MapComponent from '../components/MapComponent';
 
 export default function MapScreen() {
-  const cafes = [
-    { id: '1', name: 'Cafe One', latitude: 37.78825, longitude: -122.4324 },
-    { id: '2', name: 'Cafe Two', latitude: 37.78925, longitude: -122.4334 },
-  ];
+    const [userLocation, setUserLocation] = useState(null);
 
-  const userLocation = { latitude: 37.78825, longitude: -122.4324 };
+    const cafes = [
+        {
+            id: '1',
+            name: 'Sweeter',
+            address: 'вулиця Дарвіна, 1, Харків',
+            latitude: 49.9935,
+            longitude: 36.2304,
+        },
+        {
+            id: '2',
+            name: 'Kofein',
+            address: 'проспект Науки, 18/9, Харків',
+            latitude: 50.0078,
+            longitude: 36.2337,
+        },
+    ];
+
+    useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission denied', 'We need your location to show the map.');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setUserLocation(location.coords);
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <MapComponent cafes={cafes} userLocation={userLocation} />
+      {userLocation ? (
+        <MapComponent cafes={cafes} userLocation={userLocation} />
+      ) : (
+        <Text style={styles.loadingText}>Loading your location...</Text>
+      )}
     </View>
   );
 }
@@ -19,6 +50,12 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingText: {
+    marginTop: 50,
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#666',
   },
 });
 
