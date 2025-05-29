@@ -1,9 +1,10 @@
-import { useRouter } from 'expo-router';
+import CafeCard from '@/components/CafeCard';
 import CustomButton from '@/components/CustomButton';
 import FilterSortBar from '@/components/FilterSortBar';
 import SearchBar from '@/components/SearchBar';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 /*
@@ -55,6 +56,41 @@ export default function HomeScreen() {
   const handleOrder = () => {
     alert('Checking out!');
   };
+      //cafe data
+      const cafes = [
+        {
+            id: '1',
+            name: 'Sweeter',
+            address: 'вулиця Дарвіна, 1, Харків',
+            image: 'https://unsplash.com/photos/brown-themed-bar-GXXYkSwndP4',
+            latitude: 49.9935,
+            longitude: 36.2304,
+        },
+        {
+            id: '2',
+            name: 'Kofein',
+            address: 'проспект Науки, 18/9, Харків',
+            image: 'https://unsplash.com/photos/brown-and-gray-concrete-store-nmpW_WwwVSc',
+            latitude: 50.0078,
+            longitude: 36.2337,
+        },
+        {
+            id: '3',
+            name: 'Cafe 3',
+            address: 'проспект Науки',
+            image: 'https://unsplash.com/photos/a-table-and-chairs-in-a-room-with-a-menu-on-the-wall-gitXsyBIi5s',
+            latitude: 50.0081,
+            longitude: 36.2378,
+        },
+        {
+            id: '4',
+            name: 'Cafe 4',
+            address: 'Салтівка',
+            image: 'https://unsplash.com/photos/brown-wooden-table-and-chairs-xhKG01FN2uk',
+            latitude: 50.0090,
+            longitude: 36.2322,
+        },
+    ];
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -72,6 +108,18 @@ export default function HomeScreen() {
             onMapPress={handleMap}
             filtersActive={filtersActive}
           />
+          
+          {/* Scrollable Cafe Cards */}
+          <Text style={styles.title}>Nearby Cafes</ Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContainer}
+            >
+              {cafes.map(cafe => (
+                <CafeCard key={cafe.id} cafe={cafe} />
+              ))}
+            </ScrollView>
         </View>
 
         <View style={styles.bottomContainer}>
@@ -98,5 +146,15 @@ const styles = StyleSheet.create({
 
   bottomContainer : {
     padding: 24,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginLeft: 16,
+    marginBottom: 10,
+  },
+  scrollContainer: {
+    paddingLeft: 16,
+    paddingRight: 8,
   },
 });

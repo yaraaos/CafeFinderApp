@@ -11,6 +11,7 @@ export default function MapScreen() {
             id: '1',
             name: 'Sweeter',
             address: 'вулиця Дарвіна, 1, Харків',
+            image: 'https://unsplash.com/photos/brown-themed-bar-GXXYkSwndP4',
             latitude: 49.9935,
             longitude: 36.2304,
         },
@@ -18,8 +19,25 @@ export default function MapScreen() {
             id: '2',
             name: 'Kofein',
             address: 'проспект Науки, 18/9, Харків',
+            image: 'https://unsplash.com/photos/brown-and-gray-concrete-store-nmpW_WwwVSc',
             latitude: 50.0078,
             longitude: 36.2337,
+        },
+        {
+            id: '3',
+            name: 'Cafe 3',
+            address: 'проспект Науки',
+            image: 'https://unsplash.com/photos/a-table-and-chairs-in-a-room-with-a-menu-on-the-wall-gitXsyBIi5s',
+            latitude: 50.0081,
+            longitude: 36.2378,
+        },
+        {
+            id: '4',
+            name: 'Cafe 4',
+            address: 'Салтівка',
+            image: 'https://unsplash.com/photos/brown-wooden-table-and-chairs-xhKG01FN2uk',
+            latitude: 50.0090,
+            longitude: 36.2322,
         },
     ];
 
