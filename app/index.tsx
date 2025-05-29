@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
 import FilterSortBar from '@/components/FilterSortBar';
 import SearchBar from '@/components/SearchBar';
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
 */
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersActive, setFiltersActive] = useState(false);
 
@@ -47,7 +49,7 @@ export default function HomeScreen() {
   };
 
   const handleMap = () => {
-    alert('Map pressed!');
+    router.push('/map');
   };
 
   const handleOrder = () => {
