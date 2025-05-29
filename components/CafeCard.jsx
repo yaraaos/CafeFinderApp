@@ -1,5 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, View, Platform } from 'react-native';
+
+const screenHeight = Dimensions.get('window').height;
+
 
 export default function CafeCard({ cafe }) {
   return (
@@ -12,26 +15,35 @@ export default function CafeCard({ cafe }) {
     </View>
   );
 }
+const CARD_HEIGHT = screenHeight * 0.3; 
 
 const styles = StyleSheet.create({
   card: {
     width: 300,
+    height: CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
     marginHorizontal: 10,
     backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 0,
+      },
+    }),
   },
   image: {
     width: '100%',
-    height: 180,
+    height: '65%',
   },
   textContainer: {
     padding: 12,
+    height: '30%',
   },
   name: {
     fontSize: 18,

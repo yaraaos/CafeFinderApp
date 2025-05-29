@@ -4,8 +4,10 @@ import FilterSortBar from '@/components/FilterSortBar';
 import SearchBar from '@/components/SearchBar';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+const screenHeight = Dimensions.get('window').height;
 
 /*
 export default function Index() {
@@ -110,16 +112,17 @@ export default function HomeScreen() {
           />
           
           {/* Scrollable Cafe Cards */}
-          <Text style={styles.title}>Nearby Cafes</ Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContainer}
-            >
-              {cafes.map(cafe => (
-                <CafeCard key={cafe.id} cafe={cafe} />
-              ))}
-            </ScrollView>
+          <View style={styles.cardsContainer}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContainer}
+              >
+                {cafes.map(cafe => (
+                  <CafeCard key={cafe.id} cafe={cafe} />
+                ))}
+              </ScrollView>
+          </View>
         </View>
 
         <View style={styles.bottomContainer}>
@@ -144,17 +147,16 @@ const styles = StyleSheet.create({
     gap: 19,
   },
 
-  bottomContainer : {
-    padding: 24,
+  cardsContainer: {
+    marginTop: 16,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginLeft: 16,
-    marginBottom: 10,
-  },
+
   scrollContainer: {
     paddingLeft: 16,
     paddingRight: 8,
+  },
+
+  bottomContainer : {
+    padding: 24,
   },
 });
