@@ -1,11 +1,29 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { Dimensions, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import { Dimensions, FlatList, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const MAX_WIDTH = SCREEN_WIDTH > 600 ? 600 : SCREEN_WIDTH * 0.9;
 
-export default function SearchBar({ value, onChangeText, placeholder, helperText }) {
+const suggestionsList = ['Coffee', 'Cappuccino', 'Cafe Latte', 'Caramel Macchiato', 'Croissant', 'Cheesecake', 'Matcha', 'Matcha Latte'];
+
+export default function SearchBar({ placeholder, helperText }) {
+  const [value, setValue] = useState('');
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
+  const handleInputChange = (text) => {
+    setValue(text);
+    const filtered = suggestionsList.filter(item =>
+      item.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredSuggestions(text ? filtered : []);
+  };
+
+  const handleSuggestionPress = (suggestion) => {
+    setValue(suggestion);
+    setFilteredSuggestions([]); // Clear suggestions after selecting
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputWrapper}>
@@ -13,7 +31,7 @@ export default function SearchBar({ value, onChangeText, placeholder, helperText
         <TextInput
           style={styles.input}
           value={value}
-          onChangeText={onChangeText}
+          onChangeText={handleInputChange}
           placeholder={placeholder || "Search..."}
           placeholderTextColor={Platform.select({
             ios: '#8E8E93',
@@ -25,6 +43,18 @@ export default function SearchBar({ value, onChangeText, placeholder, helperText
       {/* Show helper text when value is empty */}
       {helperText && !value && (
         <Text style={styles.helperText}>{helperText}</Text>
+      )}
+      {filteredSuggestions.length > 0 && (
+        <FlatList
+          data={filteredSuggestions}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.suggestionsList}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => handleSuggestionPress(item)} style={styles.suggestionItem}>
+              <Text>{item}</Text>
+            </TouchableOpacity>
+          )}
+        />
       )}
     </View>
   );
@@ -60,4 +90,16 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#666',
     },
+  suggestionsList: {
+    width: '100%',
+    maxWidth: MAX_WIDTH,
+    marginTop: 4,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  suggestionItem: {
+    paddingVertical: 8,
+    borderBottomColor: '#ddd',
+  },
 });
