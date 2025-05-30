@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Dimensions, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const MAX_WIDTH = SCREEN_WIDTH > 600 ? 600 : SCREEN_WIDTH * 0.9;
 
 export default function SearchBar({ value, onChangeText, placeholder, helperText }) {
   return (
@@ -37,9 +39,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f8f9fe',
-    paddingVertical: 12,
     paddingHorizontal: 16,
+    paddingVertical: Platform.OS === 'ios' ? 12 : 0,
     borderRadius: 24,
+    width: '100%',
+    maxWidth: MAX_WIDTH,
   },
 
   icon: {
