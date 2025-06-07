@@ -1,7 +1,8 @@
-import SearchBar from '@/components/SearchBar';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Dimensions, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import SearchBar from '@/components/SearchBar';
+import MainPageBar from '@/components/MainPageBar';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CafeCard from '../components/CafeCard';
@@ -12,6 +13,9 @@ const CARD_SPACING = screenWidth * 0.08;
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
+  const handleCategorySelect = (category: string) => {
+    router.push(`/${category.toLowerCase()}`);
+  };
 
   const cafesNearYou = [
     { id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
@@ -36,6 +40,7 @@ export default function Index() {
           onChangeText={setSearchQuery}
           placeholder="What would you like to drink?"
         />
+        <MainPageBar onSelect={handleCategorySelect} />
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Cafes near you</Text>
