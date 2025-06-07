@@ -1,9 +1,17 @@
-import { StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 export default function MapComponent({ cafes, userLocation }) {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <Ionicons name="arrow-back" size={20} color="578600" style={styles.icon} />
+        <Text style={styles.backText}>Back</Text>
+      </TouchableOpacity>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -34,4 +42,20 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 16,
+    zIndex: 10,
+    backgroundColor: '#fff',
+    paddingVertical: 7,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 4,
+  },
 });
+

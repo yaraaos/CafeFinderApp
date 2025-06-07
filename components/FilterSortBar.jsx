@@ -1,6 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function FilterSortBar({
   onSortPress,
@@ -50,7 +51,9 @@ const styles = StyleSheet.create({
     color: '#1f2024',
     fontWeight: 400,
   },
-  
+  icon: {
+    marginRight: 6,
+  },
   // Filter turns green when pressed on
   filter: {   
     borderRadius: 4,
