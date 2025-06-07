@@ -1,9 +1,13 @@
 import SearchBar from '@/components/SearchBar';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CafeCard from '../components/CafeCard';
+
+const screenWidth = Dimensions.get('window').width;
+const CARD_SPACING = screenWidth * 0.08;
 
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,8 +19,8 @@ export default function Index() {
   ];
 
   const lastOrders = [
-    { id: '101', name: 'Latte Machiato', cafe: 'Sweeter' },
-    { id: '102', name: 'Matcha Latte', cafe: 'Kofein' },
+    { id: '101', name: 'Latte Machiato', cafe: 'Sweeter', image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D' },
+    { id: '102', name: 'Matcha Latte', cafe: 'Kofein', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0Y2hhfGVufDB8fDB8fHww' },
   ];
 
   const discoverNewCafes = [
@@ -26,60 +30,85 @@ export default function Index() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView style={styles.container}>
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder="What would you like to drink?"
         />
 
-        {/* Cafes Near You */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Cafes near you</Text>
           <TouchableOpacity onPress={() => router.push('/map')}>
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-          {cafesNearYou.map((cafe) => (
-            <View key={cafe.id} style={styles.cardWrapper}>
-              <CafeCard cafe={cafe} />
+        <FlatList
+          horizontal
+          data={cafesNearYou}
+          keyExtractor={(item) => item.id}showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingRight: 24 }}
+          ItemSeparatorComponent={() => <View style={{ width: CARD_SPACING }} />}
+          renderItem={({ item }) => (
+            <View style={styles.cardWrapper}>
+              <CafeCard cafe={item} />
             </View>
-          ))}
-        </ScrollView>
+          )}
+          
+        />
 
-        {/* Last Orders */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Your last orders</Text>
           <TouchableOpacity>
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
-        {lastOrders.map((order) => (
-          <View key={order.id} style={styles.orderRow}>
-            <Text style={styles.orderText}>{order.name}</Text>
-            <Text style={styles.orderSub}>- {order.cafe}</Text>
-          </View>
-        ))}
+        <FlatList
+          horizontal
+          data={lastOrders}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingLeft: 4}}
+          ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+          renderItem={({ item }) => (
+            <View style={styles.lastOrderCard}>
+              <View style={styles.lastOrderImageWrapper}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={styles.lastOrderImage}
+                  resizeMode="cover"
+                />
+              </View>
+              <Text style={styles.orderText}>{item.name}</Text>
+              <Text style={styles.orderSub}>{item.cafe}</Text>
+            </View>
+          )}
+        />
 
-        {/* Discover New Cafes */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Discover new cafes</Text>
           <TouchableOpacity>
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-          {discoverNewCafes.map((cafe) => (
-            <View key={cafe.id} style={styles.cardWrapper}>
-              <CafeCard cafe={cafe} />
+        <FlatList
+          horizontal
+          data={discoverNewCafes}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingRight: 24 }}
+          ItemSeparatorComponent={() => <View style={{ width: CARD_SPACING }} />}
+          renderItem={({ item }) => (
+            <View style={styles.cardWrapper}>
+              <CafeCard cafe={item} />
             </View>
-          ))}
-        </ScrollView>
+          )}
+          showsHorizontalScrollIndicator={false}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -97,6 +126,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    paddingLeft: 8,
   },
   seeMore: {
     fontSize: 14,
@@ -109,6 +139,40 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 220,
   },
+  lastOrderCard: {
+    width: 140,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    overflow: 'hidden',
+    elevation: 2,
+    padding: 8,
+    ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOpacity: 0.2,
+          shadowOffset: { width: 0, height: 2 },
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: 0, //Completely removes shadows on Android
+        },
+      }),
+  },
+
+  lastOrderImageWrapper: {
+    width: '100%',
+    height: 90,
+    borderRadius: 8,
+    overflow: 'hidden',
+    marginBottom: 6,
+  },
+
+  lastOrderImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+  },
+  
   orderRow: {
     flexDirection: 'row',
     alignItems: 'center',

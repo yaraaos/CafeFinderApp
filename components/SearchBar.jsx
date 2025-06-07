@@ -59,7 +59,7 @@ export default function SearchBar({ value, onChangeText, placeholder }) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    marginTop: 16,
+    marginTop: 0,
   },
   inputWrapper: {
     flexDirection: 'row',

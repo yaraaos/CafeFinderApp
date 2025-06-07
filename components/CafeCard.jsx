@@ -19,11 +19,11 @@ const CARD_HEIGHT = screenHeight * 0.3;
 
 const styles = StyleSheet.create({
   card: {
-    width: 300,
+    width: 250,
     height: CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
-    marginHorizontal: 10,
+    marginHorizontal: 4,
     backgroundColor: '#fff',
     ...Platform.select({
       ios: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
       },
       android: {
-        elevation: 0,
+        elevation: 0, //Completely removes shadows on Android
       },
     }),
   },

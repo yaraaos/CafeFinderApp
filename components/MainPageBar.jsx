@@ -1,48 +1,40 @@
+// components/MainPageBar.jsx
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-// Suggestion items — can be expanded later if needed
-const suggestions = ['Cafes', 'Drinks', 'Desserts'];
+const categories = ['Cafes', 'Desserts', 'Drinks'];
 
 export default function MainPageBar({ onSelect }) {
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent}
-    >
-      <View style={styles.container}>
-        {suggestions.map((item) => (
-          <TouchableOpacity
-            key={item}
-            style={styles.chip}
-            onPress={() => onSelect(item)}
-          >
-            <Text style={styles.chipText}>{item}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      {categories.map((category) => (
+        <TouchableOpacity
+          key={category}
+          onPress={() => onSelect(category)}
+          style={styles.button}
+        >
+          <Text style={styles.text}>{category}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContent: {
-    paddingHorizontal: 16,
-  },
   container: {
     flexDirection: 'row',
-    gap: 12,
+    justifyContent: 'space-around',
+    marginTop: 12,
+    marginBottom: 6,
   },
-  chip: {
-    backgroundColor: '#f0f0f0',
+  button: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
+    backgroundColor: '#eee',
   },
-  chipText: {
+  text: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
   },
 });
