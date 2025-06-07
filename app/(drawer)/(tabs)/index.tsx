@@ -1,7 +1,12 @@
 import MainPageBar from '@/components/MainPageBar';
 import SearchBar from '@/components/SearchBar';
+import { Ionicons } from '@expo/vector-icons';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
+
+
 import { FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CafeCard from '@/components/CafeCard';
@@ -13,6 +18,15 @@ export default function Index() {
   const handleCategorySelect = (category: string) => {
     router.push(`/${category.toLowerCase()}`);
   };
+
+  type RootDrawerParamList = {
+  '(tabs)': undefined;
+  filters: undefined;
+  support: undefined;
+  };
+
+
+  const navigation = useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
 
   const cafesNearYou = [
     { id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
@@ -28,6 +42,17 @@ export default function Index() {
     { id: '3', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },
     { id: '4', name: 'Urban Brew', address: 'City Center', image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a' },
   ];
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ marginLeft: 16 }}>
+          <Ionicons name="menu" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+      headerShown: true,
+    });
+  }, [navigation]);
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
