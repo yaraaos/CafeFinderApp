@@ -1,16 +1,19 @@
 // components/MainPageBar.jsx
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const categories = ['Cafes', 'Desserts', 'Drinks'];
 
 export default function MainPageBar({ onSelect }) {
+  const router = useRouter();
+  
   return (
     <View style={styles.container}>
       {categories.map((category) => (
         <TouchableOpacity
           key={category}
-          onPress={() => onSelect(category)}
+          onPress={() => router.push(`/${category.toLowerCase()}`)}
           style={styles.button}
         >
           <Text style={styles.text}>{category}</Text>

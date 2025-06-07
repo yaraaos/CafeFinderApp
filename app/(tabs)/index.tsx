@@ -4,8 +4,8 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import CafeCard from '@/components/CafeCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CafeCard from '../components/CafeCard';
 
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState('');
