@@ -3,7 +3,6 @@ import { Dimensions, Image, Platform, StyleSheet, Text, View } from 'react-nativ
 
 const screenHeight = Dimensions.get('window').height;
 
-
 export default function CafeCard({ cafe }) {
   return (
     <View style={styles.card}>
@@ -19,7 +18,7 @@ const CARD_HEIGHT = screenHeight * 0.3;
 
 const styles = StyleSheet.create({
   card: {
-    width: 250,
+    flex: 1,
     height: CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',

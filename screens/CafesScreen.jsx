@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
 import CafeCard from '../components/CafeCard';
-import SearchBar from '../components/SearchBar';
 import FilterSortBar from '../components/FilterSortBar';
+import SearchBar from '../components/SearchBar';
 
 export default function CafesScreen() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersActive, setFiltersActive] = useState(false);
+  
+  const screenWidth = Dimensions.get('window').width;
+  const CARD_SPACING = screenWidth * 0.8;
 
   const cafes = [
     {
@@ -46,7 +49,7 @@ export default function CafesScreen() {
   ];
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <SearchBar
         value={searchQuery}
         onChangeText={setSearchQuery}
@@ -60,31 +63,39 @@ export default function CafesScreen() {
         filtersActive={filtersActive}
       />
 
-      <Text style={styles.sectionTitle}>All Cafes</Text>
-      <View style={styles.cardsContainer}>
-        {cafes.map((cafe) => (
-          <View key={cafe.id} style={styles.cardWrapper}>
-            <CafeCard cafe={cafe} />
+      <FlatList
+        data={cafes}
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
+        contentContainerStyle={{ paddingBottom: 24 }}
+        ItemSeparatorComponent={() => <View style={{ width: CARD_SPACING }} />}
+        renderItem={({ item }) => (
+          <View style={styles.cardWrapper}>
+            <CafeCard cafe={item} />
           </View>
-        ))}
-      </View>
-    </ScrollView>
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 16,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 16,
+  row: {
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
+
   cardsContainer: {
     gap: 16,
   },
   cardWrapper: {
+    flex:1,
     marginBottom: 16,
   },
 });

@@ -1,14 +1,11 @@
+import MainPageBar from '@/components/MainPageBar';
+import SearchBar from '@/components/SearchBar';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Dimensions, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import SearchBar from '@/components/SearchBar';
-import MainPageBar from '@/components/MainPageBar';
+import { FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CafeCard from '../components/CafeCard';
-
-const screenWidth = Dimensions.get('window').width;
-const CARD_SPACING = screenWidth * 0.08;
 
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,7 +50,6 @@ export default function Index() {
           data={cafesNearYou}
           keyExtractor={(item) => item.id}showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingRight: 24 }}
-          ItemSeparatorComponent={() => <View style={{ width: CARD_SPACING }} />}
           renderItem={({ item }) => (
             <View style={styles.cardWrapper}>
               <CafeCard cafe={item} />
@@ -101,7 +97,6 @@ export default function Index() {
           data={discoverNewCafes}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingRight: 24 }}
-          ItemSeparatorComponent={() => <View style={{ width: CARD_SPACING }} />}
           renderItem={({ item }) => (
             <View style={styles.cardWrapper}>
               <CafeCard cafe={item} />
@@ -125,7 +120,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
+    marginTop: 16,
     marginBottom: 12,
   },
   sectionTitle: {
