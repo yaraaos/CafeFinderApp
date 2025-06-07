@@ -1,161 +1,111 @@
-import CafeCard from '@/components/CafeCard';
-import CustomButton from '@/components/CustomButton';
-import FilterSortBar from '@/components/FilterSortBar';
-import SearchBar from '@/components/SearchBar';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import CafeCard from '../components/CafeCard';
 
-const screenHeight = Dimensions.get('window').height;
-
-/*
 export default function Index() {
+  const router = useRouter();
+
+  const cafesNearYou = [
+    { id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
+    { id: '2', name: 'Dim Kavy', address: 'Nauky Ave, 18', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24' },
+  ];
+
+  const lastOrders = [
+    { id: '101', name: 'Latte Machiato', cafe: 'Sweeter' },
+    { id: '102', name: 'Matcha Latte', cafe: 'Kofein' },
+  ];
+
+  const discoverNewCafes = [
+    { id: '3', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },
+    { id: '4', name: 'Urban Brew', address: 'City Center', image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a' },
+  ];
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.text}>Main menu</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Cafes near you</Text>
+        <TouchableOpacity onPress={() => router.push('/map')}>
+          <Text style={styles.seeMore}>See more</Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+        {cafesNearYou.map((cafe) => (
+          <View key={cafe.id} style={styles.cardWrapper}>
+            <CafeCard cafe={cafe} />
+          </View>
+        ))}
+      </ScrollView>
+
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Your last orders</Text>
+        <TouchableOpacity>
+          <Text style={styles.seeMore}>See more</Text>
+        </TouchableOpacity>
+      </View>
+      {lastOrders.map((order) => (
+        <View key={order.id} style={styles.orderRow}>
+          <Text style={styles.orderText}>{order.name}</Text>
+          <Text style={styles.orderSub}>- {order.cafe}</Text>
+        </View>
+      ))}
+
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Discover new cafes</Text>
+        <TouchableOpacity>
+          <Text style={styles.seeMore}>See more</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+        {discoverNewCafes.map((cafe) => (
+          <View key={cafe.id} style={styles.cardWrapper}>
+            <CafeCard cafe={cafe} />
+          </View>
+        ))}
+      </ScrollView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   container: {
-    flex: 1,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 24,
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  seeMore: {
+    fontSize: 14,
+    color: '#578600',
+  },
+  horizontalScroll: {
+    paddingLeft: 2,
+  },
+  cardWrapper: {
+    marginRight: 16,
+    width: 220,
+  },
+  orderRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    marginBottom: 8,
+    marginLeft: 4,
   },
-  text: {
-    fontSize: 22,
-    lineHeight: 100,
-    color: 'blue',
-  }
-})
-*/
-
-export default function HomeScreen() {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filtersActive, setFiltersActive] = useState(false);
-
-  const handleSort = () => {
-    alert('Sort pressed!');
-  };
-
-  const handleFilter = () => {
-    setFiltersActive(!filtersActive);
-    alert('Filter added!');
-  };
-
-  const handleMap = () => {
-    router.push('/map');
-  };
-
-  const handleOrder = () => {
-    alert('Checking out!');
-  };
-      //cafe data
-      const cafes = [
-        {
-            id: '1',
-            name: 'Sweeter',
-            address: 'вулиця Дарвіна, 1, Харків',
-            image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93',
-            latitude: 49.9935,
-            longitude: 36.2304,
-        },
-        {
-            id: '2',
-            name: 'Kofein',
-            address: 'проспект Науки, 18/9, Харків',
-            image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24',
-            latitude: 50.0078,
-            longitude: 36.2337,
-        },
-        {
-            id: '3',
-            name: 'Cafefe',
-            address: 'проспект Науки',
-            image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            latitude: 50.0081,
-            longitude: 36.2378,
-        },
-        {
-            id: '4',
-            name: 'Rivarno Cafe',
-            address: 'Салтівка',
-            image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzd8fGNhZmV8ZW58MHx8MHx8fDA%3D',
-            latitude: 50.0090,
-            longitude: 36.2322,
-        },
-    ];
-
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.topContainer}>
-          <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder="What would you like to drink?"
-          />
-          <FilterSortBar
-            onSortPress={handleSort}
-            onFilterPress={handleFilter}
-            onMapPress={handleMap}
-            filtersActive={filtersActive}
-          />
-          
-          {/* Scrollable Cafe Cards */}
-          <View style={styles.cardsContainer}>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.scrollContainer}
-              >
-                {cafes.map(cafe => (
-                  <CafeCard key={cafe.id} cafe={cafe} />
-                ))}
-              </ScrollView>
-          </View>
-        </View>
-
-        <View style={styles.bottomContainer}>
-          <CustomButton text="Checkout" color="#578600" onPress={handleOrder} />
-        </View>
-      </View>
-    </SafeAreaView>
-    );
-  }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
+  orderText: {
+    fontSize: 15,
+    fontWeight: '600',
   },
-
-  container: {
-    flex: 1,
-  },
-
-  topContainer: {
-    flex: 1,
-    gap: 0,
-  },
-
-  cardsContainer: {
-    marginTop: 16,
-  },
-
-  scrollContainer: {
-    paddingLeft: 16,
-    paddingRight: 8,
-  },
-
-  bottomContainer : {
-    padding: 24,
+  orderSub: {
+    fontSize: 14,
+    color: '#666',
+    marginLeft: 6,
   },
 });
