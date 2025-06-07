@@ -1,9 +1,12 @@
+import SearchBar from '@/components/SearchBar';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CafeCard from '../components/CafeCard';
 
 export default function Index() {
+  const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
 
   const cafesNearYou = [
@@ -22,52 +25,65 @@ export default function Index() {
   ];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Cafes near you</Text>
-        <TouchableOpacity onPress={() => router.push('/map')}>
-          <Text style={styles.seeMore}>See more</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-        {cafesNearYou.map((cafe) => (
-          <View key={cafe.id} style={styles.cardWrapper}>
-            <CafeCard cafe={cafe} />
-          </View>
-        ))}
-      </ScrollView>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <SearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="What would you like to drink?"
+        />
 
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Your last orders</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeMore}>See more</Text>
-        </TouchableOpacity>
-      </View>
-      {lastOrders.map((order) => (
-        <View key={order.id} style={styles.orderRow}>
-          <Text style={styles.orderText}>{order.name}</Text>
-          <Text style={styles.orderSub}>- {order.cafe}</Text>
+        {/* Cafes Near You */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Cafes near you</Text>
+          <TouchableOpacity onPress={() => router.push('/map')}>
+            <Text style={styles.seeMore}>See more</Text>
+          </TouchableOpacity>
         </View>
-      ))}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+          {cafesNearYou.map((cafe) => (
+            <View key={cafe.id} style={styles.cardWrapper}>
+              <CafeCard cafe={cafe} />
+            </View>
+          ))}
+        </ScrollView>
 
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Discover new cafes</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeMore}>See more</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-        {discoverNewCafes.map((cafe) => (
-          <View key={cafe.id} style={styles.cardWrapper}>
-            <CafeCard cafe={cafe} />
+        {/* Last Orders */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Your last orders</Text>
+          <TouchableOpacity>
+            <Text style={styles.seeMore}>See more</Text>
+          </TouchableOpacity>
+        </View>
+        {lastOrders.map((order) => (
+          <View key={order.id} style={styles.orderRow}>
+            <Text style={styles.orderText}>{order.name}</Text>
+            <Text style={styles.orderSub}>- {order.cafe}</Text>
           </View>
         ))}
+
+        {/* Discover New Cafes */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Discover new cafes</Text>
+          <TouchableOpacity>
+            <Text style={styles.seeMore}>See more</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+          {discoverNewCafes.map((cafe) => (
+            <View key={cafe.id} style={styles.cardWrapper}>
+              <CafeCard cafe={cafe} />
+            </View>
+          ))}
+        </ScrollView>
       </ScrollView>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     paddingVertical: 24,
     paddingHorizontal: 16,
