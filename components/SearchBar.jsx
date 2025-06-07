@@ -7,12 +7,11 @@ const MAX_WIDTH = SCREEN_WIDTH > 600 ? 600 : SCREEN_WIDTH * 0.9;
 
 const suggestionsList = ['Coffee', 'Cappuccino', 'Cafe Latte', 'Caramel Macchiato', 'Croissant', 'Cheesecake', 'Matcha', 'Matcha Latte'];
 
-export default function SearchBar({ placeholder, helperText }) {
-  const [value, setValue] = useState('');
+export default function SearchBar({ value, onChangeText, placeholder }) {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
 
   const handleInputChange = (text) => {
-    setValue(text);
+    onChangeText(text);
     const filtered = suggestionsList.filter(item =>
       item.toLowerCase().includes(text.toLowerCase())
     );
@@ -20,7 +19,7 @@ export default function SearchBar({ placeholder, helperText }) {
   };
 
   const handleSuggestionPress = (suggestion) => {
-    setValue(suggestion);
+    onChangeText(suggestion);
     setFilteredSuggestions([]); // Clear suggestions after selecting
   };
 
@@ -41,9 +40,6 @@ export default function SearchBar({ placeholder, helperText }) {
       </View>
       
       {/* Show helper text when value is empty */}
-      {helperText && !value && (
-        <Text style={styles.helperText}>{helperText}</Text>
-      )}
       {filteredSuggestions.length > 0 && (
         <FlatList
           data={filteredSuggestions}
@@ -85,11 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#333',
   },
-  helperText: {
-    marginTop: 4,
-    fontSize: 10,
-    color: '#666',
-    },
+  
   suggestionsList: {
     width: '100%',
     maxWidth: MAX_WIDTH,

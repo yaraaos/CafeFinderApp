@@ -30,15 +30,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 8,
-    backgroundColor: '#E3FFE3',
+    paddingVertical: 10,
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   text: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#1f2024',
     fontWeight: 400,
   },

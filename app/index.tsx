@@ -102,7 +102,6 @@ export default function HomeScreen() {
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder="What would you like to drink?"
-            helperText="Try searching for drinks like Latte, Matcha..."
           />
           <FilterSortBar
             onSortPress={handleSort}
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
 
   topContainer: {
     flex: 1,
-    gap: 19,
+    gap: 0,
   },
 
   cardsContainer: {
