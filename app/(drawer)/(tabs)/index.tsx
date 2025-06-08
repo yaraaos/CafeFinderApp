@@ -104,7 +104,7 @@ export default function Index() {
         {/* cafes section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Cafes near you</Text>
-          <TouchableOpacity onPress={() => router.push('/map')}>
+          <TouchableOpacity onPress={() => router.push('/breweriescafes')}>
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
@@ -113,7 +113,7 @@ export default function Index() {
           horizontal
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 16 }}
+          contentContainerStyle={{ paddingRight: 16 }}
           renderItem={({ item }) => {
             const imageUrl = item.image_url
             ? item.image_url
