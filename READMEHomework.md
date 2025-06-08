@@ -4,3 +4,4 @@
 ![filter adds a dot when pressed on it](<Screenshot (258).png>)
 ![iphone](image.png)
 ![iphone](image-1.png)
+![screen video Hw8](ДЗ8.mp4)
