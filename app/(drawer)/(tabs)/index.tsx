@@ -4,17 +4,24 @@ import { Ionicons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 
 import { FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 import CafeCard from '@/components/CafeCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { fetchBreweries } from '@/app/api';
+
 
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [breweries, setBreweries] = useState<any[]>([]);  // ← holds the API data
+  const [loading, setLoading] = useState(true); // ← loading flag
+  const [error, setError] = useState<string|null>(null);
+  
   const router = useRouter();
   const handleCategorySelect = (category: string) => {
     router.push(`/${category.toLowerCase()}`);
@@ -26,13 +33,12 @@ export default function Index() {
   support: undefined;
   };
 
-
   const navigation = useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
 
-  const cafesNearYou = [
-    { id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
-    { id: '2', name: 'Dim Kavy', address: 'Nauky Ave, 18', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24' },
-  ];
+  //const cafesNearYou = [
+    //{ id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
+    //{ id: '2', name: 'Dim Kavy', address: 'Nauky Ave, 18', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24' },
+  //];
 
   const lastOrders = [
     { id: '101', name: 'Latte Machiato', cafe: 'Sweeter', image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D' },
@@ -43,6 +49,20 @@ export default function Index() {
     { id: '3', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },
     { id: '4', name: 'Urban Brew', address: 'City Center', image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a' },
   ];
+
+  useEffect(() => {
+    fetchBreweries('Vienna')
+      .then((data) => {
+      setBreweries(data);
+      setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
+   }, []);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -54,6 +74,22 @@ export default function Index() {
     });
   }, [navigation]);
 
+  // loading & error guards
+  if (loading){
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View style={styles.loader}>
+        <Text>Error: {error}</Text>
+      </View>
+    )
+  }   
+  
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -65,6 +101,7 @@ export default function Index() {
         />
         <MainPageBar onSelect={handleCategorySelect} />
 
+        {/* cafes section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Cafes near you</Text>
           <TouchableOpacity onPress={() => router.push('/map')}>
@@ -72,18 +109,28 @@ export default function Index() {
           </TouchableOpacity>
         </View>
         <FlatList
+          data={breweries}
           horizontal
-          data={cafesNearYou}
-          keyExtractor={(item) => item.id}showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingRight: 24 }}
-          renderItem={({ item }) => (
-            <View style={styles.cardWrapper}>
-              <CafeCard cafe={item} />
-            </View>
-          )}
-          
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
+          renderItem={({ item }) => {
+            const cafe = {
+              id: item.id,
+              name: item.name,
+              address: `${item.street || ''}, ${item.city}`,
+              image:
+                item.image_url || 'https://via.placeholder.com/150',
+            };
+            return (
+              <View style={styles.cardWrapper}>
+                <CafeCard cafe={cafe} />
+              </View>
+            );
+          }}
         />
 
+        {/* Last orders */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Your last orders</Text>
           <TouchableOpacity>
@@ -112,6 +159,7 @@ export default function Index() {
           )}
         />
 
+        {/* Discover new cafes */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Discover new cafes</Text>
           <TouchableOpacity>
@@ -123,12 +171,13 @@ export default function Index() {
           data={discoverNewCafes}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingRight: 24 }}
+          showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.cardWrapper}>
               <CafeCard cafe={item} />
             </View>
           )}
-          showsHorizontalScrollIndicator={false}
+          
         />
       </ScrollView>
     </SafeAreaView>
@@ -142,6 +191,11 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 24,
     paddingHorizontal: 16,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -213,5 +267,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     marginLeft: 6,
+  },
+  breweryName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  brewerySub: {
+    fontSize: 14,
+    color: '#666',
   },
 });
