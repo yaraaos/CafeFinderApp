@@ -16,10 +16,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchBreweries } from '@/API/_api';
 
 
+
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [breweries, setBreweries] = useState<any[]>([]);  // ← holds the API data
-  const [loading, setLoading] = useState(true); // ← loading flag
+  const [breweries, setBreweries] = useState<any[]>([]);  // holds the API data
+  const [loading, setLoading] = useState(true); // loading flag
   const [error, setError] = useState<string|null>(null);
   
   const router = useRouter();
@@ -104,7 +105,8 @@ export default function Index() {
         {/* cafes section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Cafes near you</Text>
-          <TouchableOpacity onPress={() => router.push('/breweriescafes')}>
+          <TouchableOpacity onPress={() => 
+            router.push('/breweriescafes')}>
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
@@ -125,9 +127,16 @@ export default function Index() {
               image: imageUrl,
             };
             return (
-              <View style={styles.cardWrapper}>
+              <TouchableOpacity
+                style={styles.cardWrapper}
+                onPress={() => {
+                  console.log('🛫 Tapped item, id =', item.id);
+                  //Alert.alert('Tapped!', `id = ${item.id}`);
+                  router.push(`/breweriescafes/${item.id}`);
+                }}
+              >
                 <CafeCard cafe={cafe} />
-              </View>
+              </TouchableOpacity>
             );
           }}
         />

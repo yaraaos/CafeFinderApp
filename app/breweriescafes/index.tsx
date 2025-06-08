@@ -1,16 +1,15 @@
 // app/(tabs)/breweries/index.tsx
 
+import { fetchBreweries } from '@/API/_api'; // adjust path if needed
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  FlatList,
   ActivityIndicator,
+  FlatList,
   StyleSheet,
-  TouchableOpacity,
+  Text,
+  TouchableOpacity
 } from 'react-native';
-import { useRouter } from 'expo-router';
-import { fetchBreweries } from '@/API/_api'; // adjust path if needed
 
 /**
  * Screen that shows the full list of breweries.
