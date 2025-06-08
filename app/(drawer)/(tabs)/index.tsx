@@ -12,6 +12,7 @@ import { FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpaci
 import CafeCard from '@/components/CafeCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
@@ -49,7 +50,7 @@ export default function Index() {
           <Ionicons name="menu" size={24} color="black" />
         </TouchableOpacity>
       ),
-      headerShown: true,
+      headerShown: false,
     });
   }, [navigation]);
 

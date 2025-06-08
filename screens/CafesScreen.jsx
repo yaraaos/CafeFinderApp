@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CafeCard from '../components/CafeCard';
 import FilterSortBar from '../components/FilterSortBar';
 import SearchBar from '../components/SearchBar';
@@ -49,43 +50,48 @@ export default function CafesScreen() {
   ];
 
   return (
-    <View style={styles.container}>
-      <SearchBar
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        placeholder="Search for cafes..."
-      />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <SearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Search for cafes..."
+        />
 
-      <FilterSortBar
-        onSortPress={() => alert('Sort')}
-        onFilterPress={() => setFiltersActive(!filtersActive)}
-        onMapPress={() => router.push('/map')}
-        filtersActive={filtersActive}
-      />
+        <FilterSortBar
+          onSortPress={() => alert('Sort')}
+          onFilterPress={() => setFiltersActive (!filtersActive)}
+          onMapPress={() => router.push('/map')}
+          filtersActive={filtersActive}
+        />
 
-      <FlatList
-        data={cafes}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        contentContainerStyle={{ paddingBottom: 24 }}
-        ItemSeparatorComponent={() => <View style={{ width: CARD_SPACING }} />}
-        renderItem={({ item }) => (
-          <View style={styles.cardWrapper}>
-            <CafeCard cafe={item} />
-          </View>
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+        <FlatList
+          data={cafes}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          contentContainerStyle={{ paddingBottom: 24 }}
+          ItemSeparatorComponent={() => <View style={{  width: CARD_SPACING }} />}
+          renderItem={({ item }) => (
+            <View style={styles.cardWrapper}>
+              <CafeCard cafe={item} />
+            </View>
+          )}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    padding: 16,
-    marginTop: 50,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
   },
   row: {
     justifyContent: 'space-between',
