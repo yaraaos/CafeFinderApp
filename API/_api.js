@@ -14,10 +14,10 @@ const SINGLE_BREWERY_URL = (id) => `${API_BASE_URL}/breweries/${id}`;
  * @param {string} city
  * @returns {Promise<Array>}
  */
-export async function fetchBreweries(city = '') {
+export async function fetchBreweries(city = '', page = 1, per_page = 30) {
   const url = city
-    ? `${LIST_BREWERIES_URL}?by_city=${encodeURIComponent(city)}`
-    : LIST_BREWERIES_URL;
+    ? `${LIST_BREWERIES_URL}?by_city=${encodeURIComponent(city)}&page=${page}&per_page=${per_page}`
+    : `${LIST_BREWERIES_URL}?page=${page}&per_page=${per_page}`;
 
   const res = await fetch(url);
   if (!res.ok) {

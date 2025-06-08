@@ -7,13 +7,13 @@ import { useRouter } from 'expo-router';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 
-import { FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 
 import CafeCard from '@/components/CafeCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { fetchBreweries } from '@/app/api';
+import { fetchBreweries } from '@/API/_api';
 
 
 export default function Index() {
@@ -51,7 +51,7 @@ export default function Index() {
   ];
 
   useEffect(() => {
-    fetchBreweries('Vienna')
+    fetchBreweries('Odessa', 1, 30)
       .then((data) => {
       setBreweries(data);
       setLoading(false);
@@ -115,12 +115,14 @@ export default function Index() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 16 }}
           renderItem={({ item }) => {
+            const imageUrl = item.image_url
+            ? item.image_url
+            : `https://picsum.photos/seed/${item.id}/300/300`;
             const cafe = {
               id: item.id,
               name: item.name,
               address: `${item.street || ''}, ${item.city}`,
-              image:
-                item.image_url || 'https://via.placeholder.com/150',
+              image: imageUrl,
             };
             return (
               <View style={styles.cardWrapper}>
