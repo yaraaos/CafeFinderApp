@@ -1,6 +1,6 @@
 // app/(tabs)/breweries/index.tsx
 
-import { fetchBreweries } from '@/API/_api'; // adjust path if needed
+import { fetchBreweries } from '@/API/_api';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -23,7 +23,7 @@ export default function BreweriesList() {
   const router = useRouter();
 
   useEffect(() => {
-    fetchBreweries('', 1, 50)           // no city filter, 50 items
+    fetchBreweries('', 1, 50) // no city filter, 50 items
       .then((data) => {
         setBreweries(data);
         setLoading(false);

@@ -4,10 +4,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CafeDetailScreen() {
-  const { id } = useLocalSearchParams(); // this gets the ID from the URL
+  const { id } = useLocalSearchParams(); // gets the ID from the URL
   const router = useRouter();
 
-  // You can later fetch the cafe details using the id
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>

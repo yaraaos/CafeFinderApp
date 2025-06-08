@@ -5,13 +5,13 @@ export default function RootStackLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,        // hide headers on the root stack
+        headerShown: false,
       }}
     >
       {/* hook into the entire (drawer) group */}
       <Stack.Screen name="(drawer)" />
       
-      {/* any global screens you want at root-level: */}
+      {/* (for later) any global screens you want at root-level: */}
       {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
     </Stack>
   );
