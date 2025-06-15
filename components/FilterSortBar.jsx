@@ -1,6 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { darkTheme, lightTheme } from '@/constants/colors';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
 export default function FilterSortBar({
@@ -9,27 +10,32 @@ export default function FilterSortBar({
   onMapPress,
   filtersActive,
 }) {
+
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={onSortPress}>
-        <Ionicons name="swap-vertical-outline" size={18} color="#333" style={styles.icon} />
-        <Text style={styles.text}>Sort</Text>
+        <Ionicons name="swap-vertical-outline" size={18} color={colors.text} style={styles.icon} />
+        <Text style={[styles.text, { color: colors.text }]}>Sort</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={onFilterPress}>
          <Ionicons
           name="options-outline"
           size={18}
-          color={filtersActive ? '#578600' : '#333'}
+          // Filter turns green when pressed on
+          color={filtersActive ? colors.accent : colors.text}
           style={styles.icon}
         />
-        <Text style={styles.text}>Filter</Text>
-        {filtersActive && <View style={styles.filter} />}
+        <Text style={[styles.text, { color: colors.text }]}>Filter</Text>
+        {filtersActive && <View style={[styles.filter, { backgroundColor: colors.accent }]} />}
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={onMapPress}>
-        <Ionicons name="map-outline" size={18} color="#333" style={styles.icon} />
-        <Text style={styles.text}>Map</Text>
+        <Ionicons name="map-outline" size={18} color={colors.text} style={styles.icon} />
+        <Text style={[styles.text, { color: colors.text }]}>Map</Text>
       </TouchableOpacity>
 
     </View>
@@ -54,9 +60,7 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 6,
   },
-  // Filter turns green when pressed on
   filter: {   
     borderRadius: 4,
-    backgroundColor: '#578600',
   },
 });

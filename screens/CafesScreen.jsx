@@ -1,3 +1,5 @@
+import { darkTheme, lightTheme } from '@/constants/colors';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
@@ -48,10 +50,14 @@ export default function CafesScreen() {
       longitude: 36.2322,
     },
   ];
+  
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
