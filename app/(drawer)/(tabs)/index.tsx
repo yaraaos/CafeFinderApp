@@ -1,7 +1,7 @@
-import { useTheme } from '@/contexts/ThemeContext';
-import { lightTheme, darkTheme } from '@/constants/colors';
 import MainPageBar from '@/components/MainPageBar';
 import SearchBar from '@/components/SearchBar';
+import { darkTheme, lightTheme } from '@/constants/colors';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
@@ -148,7 +148,7 @@ export default function Index() {
 
         {/* Last orders */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Your last orders</Text>
+          <Text style={[styles.sectionTitle, {color: colors.text}]}>Your last orders</Text>
           <TouchableOpacity>
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
@@ -177,7 +177,7 @@ export default function Index() {
 
         {/* Discover new cafes */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Discover new cafes</Text>
+          <Text style={[styles.sectionTitle, {color: colors.text}]}>Discover new cafes</Text>
           <TouchableOpacity>
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
