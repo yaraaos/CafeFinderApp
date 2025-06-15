@@ -1,4 +1,5 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem, updateQuantity } from '../redux/cartSlice';
 
@@ -17,6 +18,7 @@ export default function CartScreen() {
   };
 
   return (
+    <SafeAreaView style={styles.safeArea}>
     <View style={styles.container}>
       <Text style={styles.header}>Your Cart</Text>
       
@@ -26,43 +28,54 @@ export default function CartScreen() {
         <FlatList
           data={cart}
           keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
           renderItem={({ item }) => (
-             <View style={styles.item}>
-              <Text style={styles.itemText}>{item.name}</Text>
+            <View style={styles.card}>
+              <View style>
+                <Text style={styles.itemName}>{item.name}</Text>
+              </View>
 
               <View style={styles.controls}>
-                <TouchableOpacity onPress={() => handleQuantityChange(item, -1)} style={styles.btn}>
+                <TouchableOpacity onPress={() => handleQuantityChange(item, -1)} style={styles.controlBtn}>
                   <Text style={styles.btnText}>−</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.qty}>{item.quantity}</Text>
+                <Text style={styles.quantity}>{item.quantity}</Text>
 
-                <TouchableOpacity onPress={() => handleQuantityChange(item, 1)} style={styles.btn}>
+                <TouchableOpacity onPress={() => handleQuantityChange(item, 1)} style={styles.controlBtn}>
                   <Text style={styles.btnText}>+</Text>
                 </TouchableOpacity>
               </View>
             </View>
-          )}
-        />
-      )}
+           )}
+         />
+        )}
     </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f9f9f9',
+  },
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 24,
   },
   header: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   empty: {
     fontSize: 16,
-    color: '#666',
-    marginTop: 20,
+    color: '#777',
+    textAlign: 'center',
+    marginTop: 100,
   },
   item: {
     flexDirection: 'row',
@@ -72,14 +85,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     borderRadius: 8,
   },
-  itemText:{
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 0,
+      },
+    }),
+  },
+   itemName: {
     fontSize: 16,
+    fontWeight: '600',
+    paddingVertical: '5',
   },
   controls: { 
     flexDirection: 'row', 
-    alignItems: 'center' 
+    alignItems: 'center',
   },
-  btn: {
+  controlBtn: {
     backgroundColor: '#578600',
     paddingHorizontal: 12,
     paddingVertical: 4,
@@ -88,9 +122,10 @@ const styles = StyleSheet.create({
   },
   btnText: { 
     color: '#fff', 
-    fontSize: 18 
+    fontSize: 18,
+    fontWeight: 'bold', 
   },
-  qty: { 
-    fontSize: 16 
+  quantity: { 
+    fontSize: 16, 
   },
 });
