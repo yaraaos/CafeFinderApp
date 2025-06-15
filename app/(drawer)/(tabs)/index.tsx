@@ -1,3 +1,5 @@
+import { useTheme } from '@/contexts/ThemeContext';
+import { lightTheme, darkTheme } from '@/constants/colors';
 import MainPageBar from '@/components/MainPageBar';
 import SearchBar from '@/components/SearchBar';
 import { Ionicons } from '@expo/vector-icons';
@@ -36,6 +38,9 @@ export default function Index() {
 
   const navigation = useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
 
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
   //const cafesNearYou = [
     //{ id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
     //{ id: '2', name: 'Dim Kavy', address: 'Nauky Ave, 18', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24' },
@@ -52,7 +57,7 @@ export default function Index() {
   ];
 
   useEffect(() => {
-    fetchBreweries('Odessa', 1, 30)
+    fetchBreweries('Berlin', 1, 30)
       .then((data) => {
       setBreweries(data);
       setLoading(false);
@@ -93,7 +98,7 @@ export default function Index() {
   
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.container}>
         <SearchBar
           value={searchQuery}
@@ -104,7 +109,7 @@ export default function Index() {
 
         {/* cafes section */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Cafes near you</Text>
+          <Text style={[styles.sectionTitle, {color: colors.text}]}>Cafes near you</Text>
           <TouchableOpacity onPress={() => 
             router.push('/breweriescafes')}>
             <Text style={styles.seeMore}>See more</Text>
