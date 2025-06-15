@@ -1,6 +1,6 @@
 import MainPageBar from '@/components/MainPageBar';
 import SearchBar from '@/components/SearchBar';
-import { darkTheme, lightTheme } from '@/constants/colors';
+import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';

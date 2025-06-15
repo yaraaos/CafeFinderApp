@@ -1,4 +1,4 @@
-import { darkTheme, lightTheme } from '@/constants/colors';
+import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
