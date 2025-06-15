@@ -1,3 +1,5 @@
+//app/map.jsx
+
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Alert } from 'react-native';
 import * as Location from 'expo-location';

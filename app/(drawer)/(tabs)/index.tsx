@@ -15,6 +15,11 @@ import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StyleSheet, T
 import CafeCard from '@/components/CafeCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useDispatch } from 'react-redux';
+import { addItem } from '../../../redux/cartSlice';
+
+import FloatingCartButton from '@/components/FloatingCartBtn';
+
 import { fetchBreweries } from '@/API/_api';
 
 
@@ -40,6 +45,9 @@ export default function Index() {
 
   const { theme } = useTheme();
   const colors = theme === 'dark' ? darkTheme : lightTheme;
+
+  const dispatch = useDispatch();
+
 
   //const cafesNearYou = [
     //{ id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
@@ -171,6 +179,13 @@ export default function Index() {
               </View>
               <Text style={styles.orderText}>{item.name}</Text>
               <Text style={styles.orderSub}>{item.cafe}</Text>
+
+              <TouchableOpacity
+                onPress={() => dispatch(addItem(item))}
+                style={styles.addButton}
+              >
+                <Text style={styles.addButtonText}>Add to Cart</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -192,10 +207,10 @@ export default function Index() {
             <View style={styles.cardWrapper}>
               <CafeCard cafe={item} />
             </View>
-          )}
-          
+          )} 
         />
       </ScrollView>
+      <FloatingCartButton />
     </SafeAreaView>
   );
 }
@@ -235,6 +250,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 220,
   },
+
   lastOrderCard: {
     width: 140,
     backgroundColor: '#fff',
@@ -254,7 +270,6 @@ const styles = StyleSheet.create({
         },
       }),
   },
-
   lastOrderImageWrapper: {
     width: '100%',
     height: 90,
@@ -262,7 +277,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 6,
   },
-
   lastOrderImage: {
     width: '100%',
     height: '100%',
@@ -284,6 +298,7 @@ const styles = StyleSheet.create({
     color: '#666',
     marginLeft: 6,
   },
+
   breweryName: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -293,4 +308,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+
+  addButton: {
+    marginTop: 8,
+    paddingVertical: 6,
+    backgroundColor: '#578600',
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+
 });
