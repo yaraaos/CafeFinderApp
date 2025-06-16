@@ -1,13 +1,23 @@
 import React from 'react';
-import { Modal, Text, View, StyleSheet } from 'react-native';
+import { Modal, StyleSheet, Text, View } from 'react-native';
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  runOnJS,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming
 } from 'react-native-reanimated';
 
-export default function CafeMenuModal({ cafe, visible, onClose }) {
+type Cafe = {
+  name: string;
+  [key: string]: any; 
+};
+
+type CafeMenuModalProps = {
+  cafe: Cafe | null;
+  visible: boolean;
+  onClose: () => void;
+};
+
+export default function CafeMenuModal({ cafe, visible, onClose }: CafeMenuModalProps) {
   const modalOpacity = useSharedValue(visible ? 1 : 0);
   const modalTranslate = useSharedValue(visible ? 0 : 100);
 

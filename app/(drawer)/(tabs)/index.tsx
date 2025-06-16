@@ -8,16 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
-
-
-
-
 
 import CafeCard from '@/components/CafeCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,11 +15,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../../redux/cartSlice';
 
-import CafeMenuModal from '@/components/CafeMenuModal';
 import FloatingCartButton from '@/components/FloatingCartBtn';
-
+import CafeMenuModal from '../../../components/CafeMenuModal';
 
 import { fetchBreweries } from '@/API/_api';
+
 
 
 
@@ -59,27 +49,9 @@ export default function Index() {
 
   const [selectedCafe, setSelectedCafe] = useState(null);
 
-  const modalOpacity = useSharedValue(0);
-    const modalTranslate = useSharedValue(100);
-
   const showModal = (cafe: any) => {
     setSelectedCafe(cafe);
-    modalOpacity.value = withTiming(1);
-    modalTranslate.value = withTiming(0);
   };
-
-  const hideModal = () => {
-    modalOpacity.value = withTiming(0);
-    modalTranslate.value = withTiming(100, {}, () => {
-    runOnJS(setSelectedCafe)(null);
-    });
-  };
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: modalOpacity.value,
-    transform: [{ translateY: modalTranslate.value }],
-  }));
-
 
   //const cafesNearYou = [
     //{ id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
