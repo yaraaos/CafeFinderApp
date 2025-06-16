@@ -65,7 +65,7 @@ export default function Index() {
   ];
 
   useEffect(() => {
-    fetchBreweries('Berlin', 1, 30)
+    fetchBreweries('Odessa', 1, 30)
       .then((data) => {
       setBreweries(data);
       setLoading(false);

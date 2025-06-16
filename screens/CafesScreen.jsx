@@ -2,7 +2,13 @@ import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { Dimensions, FlatList, Modal, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CafeCard from '../components/CafeCard';
 import FilterSortBar from '../components/FilterSortBar';
@@ -12,15 +18,40 @@ export default function CafesScreen() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersActive, setFiltersActive] = useState(false);
-  
+  const [selectedCafe, setSelectedCafe] = useState(null);
+
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
+  const modalOpacity = useSharedValue(0);
+  const modalTranslate = useSharedValue(100);
+
   const screenWidth = Dimensions.get('window').width;
   const CARD_SPACING = screenWidth * 0.8;
+
+  const showModal = (cafe) => {
+    setSelectedCafe(cafe);
+    modalOpacity.value = withTiming(1);
+    modalTranslate.value = withTiming(0);
+  };
+
+  const hideModal = () => {
+    modalOpacity.value = withTiming(0);
+    modalTranslate.value = withTiming(100, {}, () => {
+      runOnJS(setSelectedCafe)(null);
+    });
+  };
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: modalOpacity.value,
+    transform: [{ translateY: modalTranslate.value }],
+  }));
 
   const cafes = [
     {
       id: '1',
       name: 'Sweeter',
-      address: 'вулиця Дарвіна, 1, Харків',
+      address: 'вулиця Дарвіна, 1',
       image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93',
       latitude: 49.9935,
       longitude: 36.2304,
@@ -28,7 +59,7 @@ export default function CafesScreen() {
     {
       id: '2',
       name: 'Kofein',
-      address: 'проспект Науки, 18/9, Харків',
+      address: 'проспект Науки, 18/9',
       image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24',
       latitude: 50.0078,
       longitude: 36.2337,
@@ -50,9 +81,6 @@ export default function CafesScreen() {
       longitude: 36.2322,
     },
   ];
-  
-  const { theme } = useTheme();
-  const colors = theme === 'dark' ? darkTheme : lightTheme;
 
 
   return (
@@ -80,12 +108,27 @@ export default function CafesScreen() {
           ItemSeparatorComponent={() => <View style={{  width: CARD_SPACING }} />}
           renderItem={({ item }) => (
             <View style={styles.cardWrapper}>
-              <CafeCard cafe={item} />
+              <CafeCard cafe={item} onMenuPress={showModal} />
             </View>
           )}
           showsVerticalScrollIndicator={false}
         />
       </View>
+
+      {/* Menu Modal Window */}
+      <Modal visible={!!selectedCafe} transparent animationType="none">
+        <View style={styles.modalOverlay}>
+          <Animated.View style={[styles.modalContent, animatedStyle]}>
+            <Text style={styles.modalTitle}>{selectedCafe?.name} Menu</Text>
+            <Text style={styles.modalText}>
+              Menu coming soon!
+            </Text>
+            <Text onPress={hideModal} style={styles.closeButton}>
+              Close
+            </Text>
+          </Animated.View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -110,5 +153,33 @@ const styles = StyleSheet.create({
   cardWrapper: {
     flex:1,
     marginBottom: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: '#000000aa',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '85%',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#444',
+  },
+  closeButton: {
+    marginTop: 20,
+    fontSize: 16,
+    color: '#ff914d',
+    fontWeight: '600',
   },
 });
