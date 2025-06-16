@@ -5,7 +5,7 @@ import { Dimensions, Image, Platform, Pressable, StyleSheet, Text, View } from '
 
 const screenHeight = Dimensions.get('window').height;
 
-export default function CafeCard({ cafe, onMenuPress }) {
+export default function CafeCard({ cafe, onMenuPress = () => {} }) {
 
   const handleAddToFaves = () => {
     setIsFavorite(prev => !prev);

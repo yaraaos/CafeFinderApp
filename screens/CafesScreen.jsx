@@ -2,17 +2,19 @@ import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Dimensions, FlatList, Modal, StyleSheet, Text, View } from 'react-native';
-import Animated, {
+import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CafeMenuModal from '../components//CafeMenuModal';
 import CafeCard from '../components/CafeCard';
 import FilterSortBar from '../components/FilterSortBar';
 import SearchBar from '../components/SearchBar';
+
 
 export default function CafesScreen() {
   const router = useRouter();
@@ -116,19 +118,11 @@ export default function CafesScreen() {
       </View>
 
       {/* Menu Modal Window */}
-      <Modal visible={!!selectedCafe} transparent animationType="none">
-        <View style={styles.modalOverlay}>
-          <Animated.View style={[styles.modalContent, animatedStyle]}>
-            <Text style={styles.modalTitle}>{selectedCafe?.name} Menu</Text>
-            <Text style={styles.modalText}>
-              Menu coming soon!
-            </Text>
-            <Text onPress={hideModal} style={styles.closeButton}>
-              Close
-            </Text>
-          </Animated.View>
-        </View>
-      </Modal>
+      <CafeMenuModal
+        cafe={selectedCafe}
+        visible={!!selectedCafe}
+        onClose={() => setSelectedCafe(null)}
+      />
     </SafeAreaView>
   );
 }
