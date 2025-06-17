@@ -8,7 +8,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "analyze": "expo export --dev --no-minify && source-map-explorer dist/**/*.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -20,6 +21,7 @@
     "@react-navigation/native-stack": "^7.3.14",
     "@react-navigation/stack": "^7.3.3",
     "@reduxjs/toolkit": "^2.8.2",
+    "@welldone-software/why-did-you-render": "^10.0.1",
     "expo": "~53.0.9",
     "expo-blur": "~14.1.4",
     "expo-constants": "~17.1.6",
@@ -53,6 +55,7 @@
     "@types/react": "~19.0.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
+    "source-map-explorer": "^2.5.3",
     "typescript": "~5.8.3"
   },
   "private": true

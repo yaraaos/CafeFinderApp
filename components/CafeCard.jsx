@@ -1,18 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { memo } from 'react';
 import { Dimensions, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavorite } from '@/redux/favoritesSlice';
 
 const screenHeight = Dimensions.get('window').height;
+const CARD_HEIGHT = screenHeight * 0.3;
 
-export default function CafeCard({ cafe, onMenuPress = () => {} }) {
+function CafeCard({ cafe, onMenuPress = () => {} }) {
+  const dispatch = useDispatch();
+  const isFavorite = useSelector(state =>
+    state.favorites.some((f) => f.id === cafe.id)
+  );
 
   const handleAddToFaves = () => {
-    setIsFavorite(prev => !prev);
-    alert(`Added ${cafe.name} to favorites!`);
+    dispatch(toggleFavorite(cafe));
   };
-  const [isFavorite, setIsFavorite] = useState(false);
-  
+
+
   return (
     <View style={styles.card}>
       <Image source={{ uri: cafe.image }} style={styles.image} />
@@ -20,24 +25,29 @@ export default function CafeCard({ cafe, onMenuPress = () => {} }) {
         <Text style={styles.name}>{cafe.name}</Text>
         <Text style={styles.address}>{cafe.address}</Text>
 
-        {/* "See Menu" Button */}
-        < View style={styles.buttonRow}>
+        <View style={styles.buttonRow}>
           <Pressable onPress={() => onMenuPress(cafe)} style={styles.menuButton}>
             <Text style={styles.menuButtonText}>See Menu</Text>
           </Pressable>
 
           <Pressable onPress={handleAddToFaves} style={styles.faveButton}>
-            <Ionicons 
+            <Ionicons
               name={isFavorite ? 'star' : 'star-outline'}
-              size={22} 
-              color={isFavorite ? '#facc15' : '#333'} />
+              size={22}
+              color={isFavorite ? '#facc15' : '#333'}
+            />
           </Pressable>
         </View>
       </View>
     </View>
   );
 }
-const CARD_HEIGHT = screenHeight * 0.3; 
+
+// for debugging render performance
+CafeCard.whyDidYouRender = true;
+
+export default memo(CafeCard);
+
 
 const styles = StyleSheet.create({
   card: {
