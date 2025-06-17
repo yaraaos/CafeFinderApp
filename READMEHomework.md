@@ -1,7 +1,37 @@
-![map](<Screenshot (257)-2.png>)
-![scrollable cafe cards](<Screenshot (256).png>)
-![text helper removes itself when one starts to write](<Screenshot (260).png>)
-![filter adds a dot when pressed on it](<Screenshot (258).png>)
-![iphone](image.png)
-![iphone](image-1.png)
-![screen video Hw8](ДЗ8.mp4)
+Завдання 2: Анімація компонентів
+
+Вибрано компонент CafeCard, що містить кнопку "See Menu".
+
+Для анімації відкриття модального вікна використано Reanimated (useSharedValue, useAnimatedStyle, withTiming).
+
+Після натиску на кнопку, плавно з'являється CafeMenuModal.
+
+Код оптимізовано за допомогою useCallback та memo.
+
+-------------------------------------------------------------
+
+Завдання 3: Оптимізація ререндерів
+
+Обгорно CafeCard у React.memo.
+
+Використано useMemo для стабілізації масивів для FlatList.
+
+onMenuPress та onClose стабілізовані через useCallback.
+
+Додано whyDidYouRender для трекінгу зайвих ререндерів.
+
+Використано console.log для серійного відстеження CafeCard.
+
+Після всіх правок rerenders стабілізувались.
+
+-------------------------------------------------------------
+
+Завдання 4: Очищення / заміна залежностей
+
+Проєкт не використовує moment, lodash, uuid або інші важкі пакети.
+
+Спроба аналізу bundle зазнала неудачі через react-native-maps, що поки не підтримується source-map-explorer.
+
+Однак ручною перевіркою підтверджено, що немає дублікатів або сторонніх unused бібліотек.
+
+Стандарти tree-shaking забезпечують мінімізацію коду.
