@@ -1,21 +1,20 @@
-import MainPageBar from '@/components/MainPageBar';
-import SearchBar from '@/components/SearchBar';
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-import CafeCard from '@/components/CafeCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../../redux/cartSlice';
 
 import FloatingCartButton from '@/components/FloatingCartBtn';
+import MainPageBar from '@/components/MainPageBar';
+import SearchBar from '@/components/SearchBar';
+import CafeCard from '../../../components/CafeCard';
 import CafeMenuModal from '../../../components/CafeMenuModal';
 
 import { fetchBreweries } from '@/API/_api';
@@ -53,6 +52,15 @@ export default function Index() {
   const hideModal = useCallback(() => {
     setSelectedCafe(null);
   }, []);
+
+  const cafesMapped = useMemo(() => {
+    return breweries.map((item) => ({
+      id: item.id,
+      name: item.name,
+      address: `${item.street || ''}, ${item.city}`,
+      image: item.image_url || `https://picsum.photos/seed/${item.id}/300/300`,
+    }));
+  }, [breweries]);
 
   //const cafesNearYou = [
     //{ id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
@@ -129,34 +137,18 @@ export default function Index() {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={breweries}
+          data={cafesMapped}
           horizontal
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingRight: 16 }}
-          renderItem={({ item }) => {
-            const imageUrl = item.image_url
-            ? item.image_url
-            : `https://picsum.photos/seed/${item.id}/300/300`;
-            const cafe = {
-              id: item.id,
-              name: item.name,
-              address: `${item.street || ''}, ${item.city}`,
-              image: imageUrl,
-            };
-            return (
-              <TouchableOpacity
-                style={styles.cardWrapper}
-                onPress={() => {
-                  console.log('🛫 Tapped item, id =', item.id);
-                  //Alert.alert('Tapped!', `id = ${item.id}`);
-                  router.push(`/breweriescafes/${item.id}`);
-                }}
-              >
-                <CafeCard cafe={cafe} onMenuPress={showModal} />
-              </TouchableOpacity>
-            );
-          }}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.cardWrapper}
+              onPress={() => router.push(`/breweriescafes/${item.id}`)}>
+              <CafeCard cafe={item} onMenuPress={showModal} />
+            </TouchableOpacity>
+           )}
         />
 
         {/* Last orders */}
