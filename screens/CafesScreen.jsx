@@ -1,7 +1,7 @@
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
-import { useState, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -31,7 +31,8 @@ export default function CafesScreen() {
     setSelectedCafe(null);
   }, []);
 
-  const cafes = [
+
+  const stableCafes = useMemo(() => [
     {
       id: '1',
       name: 'Sweeter',
@@ -64,7 +65,8 @@ export default function CafesScreen() {
       latitude: 50.0090,
       longitude: 36.2322,
     },
-  ];
+  ], []);
+
 
 
   return (
@@ -84,7 +86,7 @@ export default function CafesScreen() {
         />
 
         <FlatList
-          data={cafes}
+          data={stableCafes}
           keyExtractor={(item) => item.id}
           numColumns={2}
           columnWrapperStyle={styles.row}

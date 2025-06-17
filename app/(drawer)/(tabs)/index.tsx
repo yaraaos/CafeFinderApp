@@ -72,10 +72,10 @@ export default function Index() {
     { id: '102', name: 'Matcha Latte', cafe: 'Kofein', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0Y2hhfGVufDB8fDB8fHww' },
   ];
 
-  const discoverNewCafes = [
+  const discoverNewCafes = useMemo(() => [
     { id: '3', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },
     { id: '4', name: 'Urban Brew', address: 'City Center', image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a' },
-  ];
+  ], []);
 
   useEffect(() => {
     fetchBreweries('Odessa', 1, 30)
