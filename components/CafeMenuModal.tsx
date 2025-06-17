@@ -1,9 +1,9 @@
 import React from 'react';
 import { Modal, StyleSheet, Text, View } from 'react-native';
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
 } from 'react-native-reanimated';
 
 type Cafe = {
@@ -29,7 +29,7 @@ export default function CafeMenuModal({ cafe, visible, onClose }: CafeMenuModalP
       modalOpacity.value = withTiming(0);
       modalTranslate.value = withTiming(100);
     }
-  }, [visible]);
+  }, [visible, modalOpacity, modalTranslate]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: modalOpacity.value,

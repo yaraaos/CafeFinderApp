@@ -1,15 +1,10 @@
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
-import {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import CafeMenuModal from '../components//CafeMenuModal';
 import CafeCard from '../components/CafeCard';
 import FilterSortBar from '../components/FilterSortBar';
@@ -25,29 +20,16 @@ export default function CafesScreen() {
   const { theme } = useTheme();
   const colors = theme === 'dark' ? darkTheme : lightTheme;
 
-  const modalOpacity = useSharedValue(0);
-  const modalTranslate = useSharedValue(100);
-
   const screenWidth = Dimensions.get('window').width;
   const CARD_SPACING = screenWidth * 0.8;
 
-  const showModal = (cafe) => {
+  const showModal = useCallback((cafe) => {
     setSelectedCafe(cafe);
-    modalOpacity.value = withTiming(1);
-    modalTranslate.value = withTiming(0);
-  };
+  }, []);
 
-  const hideModal = () => {
-    modalOpacity.value = withTiming(0);
-    modalTranslate.value = withTiming(100, {}, () => {
-      runOnJS(setSelectedCafe)(null);
-    });
-  };
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: modalOpacity.value,
-    transform: [{ translateY: modalTranslate.value }],
-  }));
+  const hideModal = useCallback(() => {
+    setSelectedCafe(null);
+  }, []);
 
   const cafes = [
     {
@@ -121,7 +103,7 @@ export default function CafesScreen() {
       <CafeMenuModal
         cafe={selectedCafe}
         visible={!!selectedCafe}
-        onClose={() => setSelectedCafe(null)}
+        onClose={hideModal}
       />
     </SafeAreaView>
   );

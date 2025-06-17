@@ -1,21 +1,40 @@
+import { toggleFavorite } from '@/redux/favoritesSlice';
 import { Ionicons } from '@expo/vector-icons';
-import React, { memo } from 'react';
+import React from 'react';
 import { Dimensions, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleFavorite } from '@/redux/favoritesSlice';
+import { RootState } from '../redux//store';
 
 const screenHeight = Dimensions.get('window').height;
 const CARD_HEIGHT = screenHeight * 0.3;
 
-function CafeCard({ cafe, onMenuPress = () => {} }) {
+export type Cafe = {
+  id: string;
+  name: string;
+  address: string;
+  image: string;
+  latitude?: number;
+  longitude?: number;
+  description?: string;
+};
+
+type CafeCardProps = {
+  cafe: Cafe;
+  onMenuPress?: (cafe: Cafe) => void;
+};
+
+function CafeCard({ cafe, onMenuPress = () => {} }: CafeCardProps) {
   const dispatch = useDispatch();
-  const isFavorite = useSelector(state =>
-    state.favorites.some((f) => f.id === cafe.id)
+  const isFavorite = useSelector((state: RootState) =>
+    state.favorites.some((f: Cafe) => f.id === cafe.id)
   );
 
   const handleAddToFaves = () => {
     dispatch(toggleFavorite(cafe));
   };
+
+  console.log(`🔁 Re-rendering CafeCard: ${cafe.name}`);
+
 
 
   return (
@@ -45,8 +64,7 @@ function CafeCard({ cafe, onMenuPress = () => {} }) {
 
 // for debugging render performance
 CafeCard.whyDidYouRender = true;
-
-export default memo(CafeCard);
+export default React.memo(CafeCard);
 
 
 const styles = StyleSheet.create({

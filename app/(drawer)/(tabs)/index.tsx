@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CafeCard from '@/components/CafeCard';
@@ -19,8 +19,6 @@ import FloatingCartButton from '@/components/FloatingCartBtn';
 import CafeMenuModal from '../../../components/CafeMenuModal';
 
 import { fetchBreweries } from '@/API/_api';
-
-
 
 
 export default function Index() {
@@ -49,9 +47,12 @@ export default function Index() {
 
   const [selectedCafe, setSelectedCafe] = useState(null);
 
-  const showModal = (cafe: any) => {
+  const showModal = useCallback((cafe: any) => {
     setSelectedCafe(cafe);
-  };
+  }, []);
+  const hideModal = useCallback(() => {
+    setSelectedCafe(null);
+  }, []);
 
   //const cafesNearYou = [
     //{ id: '1', name: 'Sweeter', address: 'Nauky Ave, 14', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
@@ -220,7 +221,7 @@ export default function Index() {
       <CafeMenuModal
         cafe={selectedCafe}
         visible={!!selectedCafe}
-        onClose={() => setSelectedCafe(null)}
+        onClose={hideModal}
       />
     </SafeAreaView>
   );
