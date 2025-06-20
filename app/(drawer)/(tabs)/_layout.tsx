@@ -1,7 +1,19 @@
 // app/(tabs)/_layout.tsx
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
 
+function CustomTabBarButton({
+  onPress,
+}: {
+  onPress?: (event: GestureResponderEvent) => void;
+}) {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.fab}>
+      <Ionicons name="star" size={24} color="#fff" />
+    </TouchableOpacity>
+  );
+}
 
 export default function TabLayout() {
   return (
@@ -22,6 +34,39 @@ export default function TabLayout() {
         tabBarActiveTintColor: '#578600',
         tabBarInactiveTintColor: 'gray',
       })}
-    />
+    >
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="desserts" />
+      
+      <Tabs.Screen
+        name="favorites"
+        options={{
+          tabBarButton: (props) => <CustomTabBarButton {...props} />,
+        }}
+      />
+      
+      <Tabs.Screen name="drinks" />
+      <Tabs.Screen name="cafes" />
+    </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    bottom: 5,
+    left: '50%',
+    transform: [{ translateX: -28 }],
+    backgroundColor: '#578600',
+    borderRadius: 30,
+    width: 56,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 4,
+  },
+});
