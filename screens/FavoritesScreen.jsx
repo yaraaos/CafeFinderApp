@@ -1,7 +1,8 @@
-// app/(drawer)/(tabs)/favorites.jsx
+// screens/FavoritesScreen.jsx
+import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import CafeCard from '../../../components/CafeCard';
+import CafeCard from '../components/CafeCard';
 
 export default function FavoritesScreen() {
   const favorites = useSelector((state) => state.favorites);

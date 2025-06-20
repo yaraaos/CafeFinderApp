@@ -14,6 +14,8 @@ export default function DrawerLayout() {
         screenOptions={{
           headerShown: false,
           drawerActiveTintColor: '#578600',
+          swipeEnabled: false,
+          drawerType: 'front',
         }}
         drawerContent={(props) => (
             <DrawerContentScrollView {...props}>

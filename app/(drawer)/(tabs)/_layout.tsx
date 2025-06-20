@@ -1,22 +1,14 @@
-// app/(tabs)/_layout.tsx
+// app/(drawer)/(tabs)/_layout.tsx
 import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
+import { Tabs, useRouter } from 'expo-router';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
-function CustomTabBarButton({
-  onPress,
-}: {
-  onPress?: (event: GestureResponderEvent) => void;
-}) {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.fab}>
-      <Ionicons name="star" size={24} color="#fff" />
-    </TouchableOpacity>
-  );
-}
 
 export default function TabLayout() {
+  const router = useRouter();
+
   return (
+    <>
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: false,
@@ -37,24 +29,25 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="desserts" />
-      
-      <Tabs.Screen
-        name="favorites"
-        options={{
-          tabBarButton: (props) => <CustomTabBarButton {...props} />,
-        }}
-      />
-      
       <Tabs.Screen name="drinks" />
       <Tabs.Screen name="cafes" />
     </Tabs>
+
+    {/* Floating Favorites Button */}
+    <TouchableOpacity
+      onPress={() => router.push('/favorites')}
+      style={styles.fab}
+    >
+      <Ionicons name="star" size={24} color="#fff" />
+      </TouchableOpacity>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
-    bottom: 5,
+    bottom: 35,
     left: '50%',
     transform: [{ translateX: -28 }],
     backgroundColor: '#578600',
