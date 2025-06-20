@@ -1,6 +1,7 @@
 // screens/FavoritesScreen.jsx
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import CafeCard from '../components/CafeCard';
 
@@ -16,16 +17,18 @@ export default function FavoritesScreen() {
   }
 
   return (
-    <FlatList
-      data={favorites}
-      keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.listContainer}
-      renderItem={({ item }) => (
-        <View style={styles.cardWrapper}>
-          <CafeCard cafe={item} />
-        </View>
-      )}
-    />
+    <SafeAreaView>
+        <FlatList
+            data={favorites}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContainer}
+            renderItem={({ item }) => (
+                <View style={styles.cardWrapper}>
+                    <CafeCard cafe={item} />
+                </View>
+            )}
+        />
+    </SafeAreaView>
   );
 }
 
