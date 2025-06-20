@@ -5,7 +5,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, LogBox, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useDispatch } from 'react-redux';
@@ -18,6 +18,12 @@ import CafeCard from '../../../components/CafeCard';
 import CafeMenuModal from '../../../components/CafeMenuModal';
 
 import { fetchBreweries } from '@/API/_api';
+
+
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested inside plain ScrollViews',
+]);
+
 
 
 export default function Index() {
@@ -121,11 +127,13 @@ export default function Index() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.container}>
-        <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="What would you like to drink?"
-        />
+        <View style={styles.searchWrapper}>
+          <SearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="What would you like to drink?"
+          />
+        </View>
         <MainPageBar onSelect={handleCategorySelect} />
 
         {/* cafes section */}
@@ -224,9 +232,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    paddingVertical: 24,
     paddingHorizontal: 16,
   },
+  searchWrapper: {
+    paddingTop: 16,
+    paddingBottom: 8,
+    alignItems: 'center',     
+  },
+
   loader: {
     flex: 1,
     justifyContent: 'center',

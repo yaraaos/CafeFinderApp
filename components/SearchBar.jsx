@@ -23,6 +23,7 @@ export default function SearchBar({ value, onChangeText, placeholder }) {
     setFilteredSuggestions([]); // Clear suggestions after selecting
   };
 
+
   return (
     <View style={styles.container}>
       <View style={styles.inputWrapper}>
@@ -60,6 +61,8 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     marginTop: 0,
+    zIndex: 10,
+    position: 'relative',
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     width: '100%',
     maxWidth: MAX_WIDTH,
+    alignSelf: 'center',
   },
 
   icon: {
@@ -83,6 +87,9 @@ const styles = StyleSheet.create({
   },
   
   suggestionsList: {
+    position: 'absolute',
+    top: 42,
+    alignSelf: 'center',
     width: '100%',
     maxWidth: MAX_WIDTH,
     marginTop: 4,

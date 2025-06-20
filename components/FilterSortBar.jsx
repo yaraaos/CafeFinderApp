@@ -1,3 +1,5 @@
+//components/filterSortBar.jsx
+
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,6 +15,7 @@ export default function FilterSortBar({
 
   const { theme } = useTheme();
   const colors = theme === 'dark' ? darkTheme : lightTheme;
+
 
   return (
     <View style={styles.container}>

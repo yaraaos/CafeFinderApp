@@ -1,3 +1,5 @@
+//screens/CafesScreen.jsx
+
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'expo-router';
@@ -68,22 +70,25 @@ export default function CafesScreen() {
   ], []);
 
 
-
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Search for cafes..."
-        />
+        <View style={styles.searchWrapper}>
+          <SearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search for cafes..."
+          />
+        </View>
 
-        <FilterSortBar
-          onSortPress={() => alert('Sort')}
-          onFilterPress={() => setFiltersActive (!filtersActive)}
-          onMapPress={() => router.push('/map')}
-          filtersActive={filtersActive}
-        />
+        <View style={styles.filterWrapper}>
+          <FilterSortBar
+            onSortPress={() => alert('Sort')}
+            onFilterPress={() => setFiltersActive (!filtersActive)}
+            onMapPress={() => router.push('/map')}
+            filtersActive={filtersActive}
+          />
+        </View>
 
         <FlatList
           data={stableCafes}
@@ -117,9 +122,19 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingVertical: 24,
     paddingHorizontal: 16,
   },
+  searchWrapper: {
+    paddingTop: 16,
+    paddingBottom: 8,
+    alignItems: 'center',
+  },
+  filterWrapper: {
+    paddingBottom: 12,
+    alignItems: 'center',
+  },
+
+
   row: {
     justifyContent: 'space-between',
     marginBottom: 16,
