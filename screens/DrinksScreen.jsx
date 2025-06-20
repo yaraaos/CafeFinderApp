@@ -1,13 +1,18 @@
 //screen/DrinksScreen.jsx
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+import FilterSortBar from '../components/FilterSortBar';
 import ItemsCard from '../components/ItemsCard';
+import SearchBar from '../components/SearchBar';
 import { addItem } from '../redux/cartSlice';
 
+
 export default function DrinksScreen() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filtersActive, setFiltersActive] = useState(false);
   const [drinks, setDrinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -35,6 +40,15 @@ export default function DrinksScreen() {
     dispatch(addItem(item));
   }, [dispatch]);
 
+
+  //filter based on search input
+  const filteredDrinks = useMemo(() => {
+    if (!searchQuery.trim()) return drinks;
+    return drinks.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [drinks, searchQuery]);
+
   if (loading) {
     return (
       <SafeAreaView style={styles.center}>
@@ -47,8 +61,20 @@ export default function DrinksScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <SearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Search for drinks..."
+      />
+
+      <FilterSortBar
+        onSortPress={() => alert('Sort coming soon')}
+        onFilterPress={() => setFiltersActive(!filtersActive)}
+        onMapPress={() => {}}
+        filtersActive={filtersActive}
+      />
       <FlatList
-        data={drinks}
+        data={filteredDrinks}
         keyExtractor={(item) => item.id}
         numColumns={2}
         columnWrapperStyle={styles.row}

@@ -1,13 +1,17 @@
 //screen/DessertsScreen.jsx
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+import FilterSortBar from '../components/FilterSortBar';
 import ItemsCard from '../components/ItemsCard';
+import SearchBar from '../components/SearchBar';
 import { addItem } from '../redux/cartSlice';
 
 export default function DessertsScreen() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filtersActive, setFiltersActive] = useState(false);
   const [desserts, setDesserts] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -35,6 +39,14 @@ export default function DessertsScreen() {
     dispatch(addItem(item));
   }, [dispatch]);
 
+    //filter based on search input
+  const filteredDesserts = useMemo(() => {
+      if (!searchQuery.trim()) return desserts;
+      return desserts.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+  }, [desserts, searchQuery]);
+
   if (loading) {
     return (
       <SafeAreaView style={styles.center}>
@@ -47,8 +59,20 @@ export default function DessertsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <SearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Search for desserts..."
+      />
+
+      <FilterSortBar
+        onSortPress={() => alert('Sort coming soon')}
+        onFilterPress={() => setFiltersActive(!filtersActive)}
+        onMapPress={() => {}}
+        filtersActive={filtersActive}
+      />        
       <FlatList
-        data={desserts}
+        data={filteredDesserts}
         keyExtractor={(item) => item.id}
         numColumns={2}
         columnWrapperStyle={styles.row}
