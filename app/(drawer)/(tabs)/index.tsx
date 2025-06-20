@@ -300,7 +300,6 @@ const styles = StyleSheet.create({
   orderSub: {
     fontSize: 14,
     color: '#666',
-    marginLeft: 6,
   },
 
   breweryName: {

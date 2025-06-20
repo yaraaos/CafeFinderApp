@@ -1,21 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+//app/(drawer)/(tabs)/desserts.jsx
 
-export default function DessertsScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Desserts Page</Text>
-    </View>
-  );
+import DessertsScreen from '../../../screens/DessertsScreen';
+
+export default function DessertsPage() {
+  return <DessertsScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-  },
-});
