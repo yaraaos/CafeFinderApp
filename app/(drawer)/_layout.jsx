@@ -14,7 +14,7 @@ export default function DrawerLayout() {
         screenOptions={{
           headerShown: false,
           drawerActiveTintColor: '#578600',
-          swipeEnabled: false,
+          swipeEnabled: true,
           drawerType: 'front',
         }}
         drawerContent={(props) => (

@@ -73,8 +73,8 @@ export default function Index() {
   ];
 
   const discoverNewCafes = useMemo(() => [
-    { id: '3', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },
-    { id: '4', name: 'Urban Brew', address: 'City Center', image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a' },
+    { id: '103', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },
+    { id: '104', name: 'Urban Brew', address: 'City Center', image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a' },
   ], []);
 
   useEffect(() => {

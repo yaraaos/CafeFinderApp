@@ -1,11 +1,16 @@
 // app/(drawer)/(tabs)/_layout.tsx
+import type { RootState } from '@/redux/store';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs, useRouter } from 'expo-router';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 
 export default function TabLayout() {
   const router = useRouter();
+  const favorites = useSelector((state: RootState) => state.favorites);
+
+  const hasFavorites = favorites.length > 0;
 
   return (
     <>
@@ -46,7 +51,7 @@ export default function TabLayout() {
       onPress={() => router.push('/favorites')}
       style={styles.fab}
     >
-      <Ionicons name="star" size={24} color="#fff" />
+      <Ionicons name="star" size={24} color={hasFavorites ? '#facc15' : '#fff'} />
       </TouchableOpacity>
     </>
   );
