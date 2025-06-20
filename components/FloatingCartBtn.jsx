@@ -2,17 +2,22 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+
 
 export default function FloatingCartButton() {
   const router = useRouter();
+
+  const insets = useSafeAreaInsets();
+  const bottomOffset = 80 + insets.bottom;
 
   const cartItems = useSelector((state) => state.cart);
   const totalCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   return (
     <TouchableOpacity
-      style={styles.fab}
+      style={[styles.fab, { bottom: bottomOffset }]}
       onPress={() => router.push('/cart')}
     >
       <Ionicons name="cart-outline" size={24} color="#fff" />

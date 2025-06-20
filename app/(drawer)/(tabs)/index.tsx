@@ -11,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../../redux/cartSlice';
 
-import FloatingCartButton from '@/components/FloatingCartBtn';
 import MainPageBar from '@/components/MainPageBar';
 import SearchBar from '@/components/SearchBar';
 import CafeCard from '../../../components/CafeCard';
@@ -215,7 +214,6 @@ export default function Index() {
           )} 
         />
       </ScrollView>
-      <FloatingCartButton />
       
       {/* Menu Modal Window */}
       <CafeMenuModal

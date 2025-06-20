@@ -1,16 +1,20 @@
 // app/(drawer)/_layout.jsx
+
 import ThemeToggle from '@/components/ThemeToggle';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
+import { StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import FloatingCartButton from '../../components/FloatingCartBtn';
 
 export default function DrawerLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider>
-        <Drawer
+<GestureHandlerRootView style={{ flex: 1 }}>
+  <View style={styles.container}>
+    <ThemeProvider>
+      <Drawer
         screenOptions={{
           headerShown: false,
           drawerActiveTintColor: '#578600',
@@ -18,13 +22,12 @@ export default function DrawerLayout() {
           drawerType: 'front',
         }}
         drawerContent={(props) => (
-            <DrawerContentScrollView {...props}>
-              <DrawerItemList {...props} />
-              <ThemeToggle />
-            </DrawerContentScrollView>
-          )}
-        >
-        {/* This connects to app/(drawer)/(tabs)/_layout.tsx */}
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <ThemeToggle />
+          </DrawerContentScrollView>
+        )}
+      >
         <Drawer.Screen
           name="(tabs)"
           options={{
@@ -36,8 +39,6 @@ export default function DrawerLayout() {
             ),
           }}
         />
-    
-        {/* These automatically map to filters.tsx & support.tsx */}
         <Drawer.Screen
           name="filters"
           options={{
@@ -56,9 +57,19 @@ export default function DrawerLayout() {
             ),
           }}
         />
-        </Drawer>
-      </ThemeProvider>
-      
-    </GestureHandlerRootView>
+      </Drawer>
+    </ThemeProvider>
+
+    <FloatingCartButton />
+  </View>
+</GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+    
+  },
+});
