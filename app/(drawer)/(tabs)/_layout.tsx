@@ -1,7 +1,7 @@
 // app/(drawer)/(tabs)/_layout.tsx
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs, useRouter } from 'expo-router';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 
 export default function TabLayout() {
@@ -29,6 +29,14 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="desserts" />
+      {/*Creates spacing around the favorites button in the center of tabs*/}
+      <Tabs.Screen
+        name="spacer"
+        options={{
+          tabBarButton: () => 
+            <View pointerEvents='none'/>,
+        }}
+      />
       <Tabs.Screen name="drinks" />
       <Tabs.Screen name="cafes" />
     </Tabs>
