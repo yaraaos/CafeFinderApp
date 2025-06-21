@@ -1,7 +1,9 @@
+import { Ionicons } from '@expo/vector-icons';
 import { FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem, updateQuantity } from '../redux/cartSlice';
+
 
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -46,13 +48,13 @@ export default function CartScreen() {
 
                     <View style={styles.controls}>
                       <TouchableOpacity onPress={() => handleQuantityChange(item, -1)} style={styles.controlBtn}>
-                        <Text style={styles.btnText}>−</Text>
+                        <Ionicons name="remove" size={18} color="#578600" />
                       </TouchableOpacity>
 
                       <Text style={[styles.quantity, { color: colors.text }]}>{item.quantity}</Text>
 
                       <TouchableOpacity onPress={() => handleQuantityChange(item, 1)} style={styles.controlBtn}>
-                        <Text style={styles.btnText}>+</Text>
+                        <Ionicons name="add" size={18} color="#578600" />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -127,23 +129,21 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 16,
     fontWeight: '600',
+    marginLeft: 7,
   },
   controls: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 6,
+    marginTop: 18,
   },
   controlBtn: {
-    backgroundColor: '#578600',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-    marginHorizontal: 6,
-  },
-  btnText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    backgroundColor: 'rgba(87, 134, 0, 0.2)',
+    width: 28,
+    height: 28,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 8,
   },
   quantity: {
     fontSize: 16,
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 8,
+    marginTop: 45,
   },
   totalWrapper: {
     flexDirection: 'row',
