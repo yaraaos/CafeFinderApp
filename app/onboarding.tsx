@@ -1,8 +1,9 @@
 //app/onboarding
 
+import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function OnboardingScreen() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function OnboardingScreen() {
     const imageCount = images.length;
     const interval = setInterval(() => {
         setIndex((prev) => (prev + 1) % imageCount);
-    }, 4000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [images.length]);
@@ -32,7 +33,8 @@ export default function OnboardingScreen() {
       <Image
         source={{ uri: images[index] }}
         style={styles.image}
-        resizeMode="cover"
+        contentFit="cover"
+        transition={500}
       />
 
       {/* Bottom card */}
