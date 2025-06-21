@@ -52,6 +52,12 @@ export default function DrawerLayout() {
               <Ionicons name="home-outline" size={size} color={color} />
             ),
           }}
+          listeners={({ navigation }) => ({
+            drawerItemPress: (e) => {
+              e.preventDefault(); 
+              navigation.navigate('(tabs)', { screen: 'index' }); 
+            },
+          })}
         />
         <Drawer.Screen
           name="filters"
