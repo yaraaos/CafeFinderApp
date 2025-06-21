@@ -31,7 +31,7 @@ export default function DrinksScreen() {
           id: drink.idDrink,
           name: drink.strDrink,
           image: drink.strDrinkThumb,
-          price: 4.99,
+          price: parseFloat((Math.random() * 4 + 2).toFixed(2)),
         }));
         setDrinks(mapped);
         setLoading(false);

@@ -9,13 +9,17 @@ export default function ItemsCard({ item, onAddToCart }) {
   if (!item.name) return null;
   
   return (
-    <View style={styles.card}>
+    <View style={styles.card}>          
+      
       <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.price}>${item.price?.toFixed(2)}</Text>
       <Text style={styles.name}>{item.name}</Text>
 
       {onAddToCart && (
         <TouchableOpacity onPress={() => onAddToCart(item)} style={styles.button}>
+
           <Text style={styles.buttonText}>Add to Cart</Text>
+          
         </TouchableOpacity>
       )}
     </View>
@@ -38,6 +42,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 140,
     borderRadius: 8,
+    position: 'relative',
   },
   name: {
     marginTop: 10,
@@ -55,5 +60,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 14,
+  },
+  price: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: '#578600',
+    color: '#fff',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    fontSize: 13,
+    fontWeight: '600',
   },
 });

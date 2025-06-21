@@ -30,7 +30,7 @@ export default function DessertsScreen() {
           id: meal.idMeal,
           name: meal.strMeal,
           image: meal.strMealThumb,
-          price: 5.49, 
+          price: parseFloat((Math.random() * 4 + 2).toFixed(2)) 
         }));
         setDesserts(mapped);
         setLoading(false);
