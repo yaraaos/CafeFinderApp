@@ -1,38 +1,23 @@
 //screens/CafesScreen.jsx
-
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
+
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import CafeMenuModal from '../components//CafeMenuModal';
 import CafeCard from '../components/CafeCard';
+import CafeMenuModal from '../components/CafeMenuModal';
 import FilterSortBar from '../components/FilterSortBar';
 import SearchBar from '../components/SearchBar';
 
-
 export default function CafesScreen() {
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersActive, setFiltersActive] = useState(false);
   const [selectedCafe, setSelectedCafe] = useState(null);
 
-  const { theme } = useTheme();
-  const colors = theme === 'dark' ? darkTheme : lightTheme;
-
-  const screenWidth = Dimensions.get('window').width;
-  const CARD_SPACING = screenWidth * 0.8;
-
-  const showModal = useCallback((cafe) => {
-    setSelectedCafe(cafe);
-  }, []);
-
-  const hideModal = useCallback(() => {
-    setSelectedCafe(null);
-  }, []);
-
+  const router = useRouter();
 
   const stableCafes = useMemo(() => [
     {
@@ -55,56 +40,57 @@ export default function CafesScreen() {
       id: '3',
       name: 'Cafefe',
       address: 'проспект Науки',
-      image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      latitude: 50.0081,
-      longitude: 36.2378,
+      image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2',
     },
     {
       id: '4',
       name: 'Rivarno Cafe',
       address: 'Салтівка',
-      image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzd8fGNhZmV8ZW58MHx8MHx8fDA%3D',
-      latitude: 50.0090,
-      longitude: 36.2322,
+      image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a',
     },
   ], []);
 
+  const filteredCafes = useMemo(() => {
+    if (!searchQuery.trim()) return stableCafes;
+    return stableCafes.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [stableCafes, searchQuery]);
+
+  const showModal = useCallback((cafe) => {
+    setSelectedCafe(cafe);
+  }, []);
+
+  const hideModal = useCallback(() => {
+    setSelectedCafe(null);
+  }, []);
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <View style={styles.searchWrapper}>
-          <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder="Search for cafes..."
-          />
-        </View>
+    <SafeAreaView style={styles.safeArea}>
+      <SearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Search for cafes..."
+      />
 
-        <View style={styles.filterWrapper}>
-          <FilterSortBar
-            onSortPress={() => alert('Sort')}
-            onFilterPress={() => setFiltersActive (!filtersActive)}
-            onMapPress={() => router.push('/map')}
-            filtersActive={filtersActive}
-          />
-        </View>
+      <FilterSortBar
+        onSortPress={() => alert('Sort coming soon')}
+        onFilterPress={() => setFiltersActive(!filtersActive)}
+        onMapPress={() => router.push('/map')}
+        filtersActive={filtersActive}
+      />
 
-        <FlatList
-          data={stableCafes}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
-          contentContainerStyle={{ paddingBottom: 24 }}
-          ItemSeparatorComponent={() => <View style={{  width: CARD_SPACING }} />}
-          renderItem={({ item }) => (
-            <View style={styles.cardWrapper}>
-              <CafeCard cafe={item} onMenuPress={showModal} />
-            </View>
-          )}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <FlatList
+        data={filteredCafes}
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
+        contentContainerStyle={{ paddingBottom: 24 }}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <CafeCard cafe={item} onMenuPress={showModal} />
+        )}
+      />
 
       {/* Menu Modal Window */}
       <CafeMenuModal
@@ -119,60 +105,11 @@ export default function CafesScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  searchWrapper: {
     paddingTop: 16,
-    paddingBottom: 8,
-    alignItems: 'center',
   },
-  filterWrapper: {
-    paddingBottom: 12,
-    alignItems: 'center',
-  },
-
-
   row: {
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
     marginBottom: 16,
-  },
-
-  cardsContainer: {
-    gap: 16,
-  },
-  cardWrapper: {
-    flex:1,
-    marginBottom: 16,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: '#000000aa',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: '85%',
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 24,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  modalText: {
-    fontSize: 16,
-    color: '#444',
-  },
-  closeButton: {
-    marginTop: 20,
-    fontSize: 16,
-    color: '#ff914d',
-    fontWeight: '600',
   },
 });
