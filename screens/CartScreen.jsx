@@ -1,3 +1,5 @@
+//screens/CartScreen.jsx
+
 import { FlatList, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +11,9 @@ import { useTheme } from '@/contexts/ThemeContext';
 
 export default function CartScreen() {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart || []);
+  const total = cart.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+
 
   const handleQuantityChange = (item, delta) => {
     const newQuantity = item.quantity + delta;
@@ -26,39 +30,44 @@ export default function CartScreen() {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.header, { color: colors.text }]}>Your Cart</Text>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <Text style={[styles.header, { color: colors.text }]}>Your Cart</Text>
       
-      {cart.length === 0 ? (
-        <Text style={[styles.empty, { color: colors.text }]}>Your cart is empty.</Text>
-      ) : (
-        <FlatList
-          data={cart}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <View style>
-                <Text style={styles.itemName}>{item.name}</Text>
-              </View>
+        {cart.length === 0 ? (
+          <Text style={[styles.empty, { color: colors.text }]}>Your cart is empty.</Text>
+        ) : (
+          <>
+          <FlatList
+            data={cart}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 100 }}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <View style>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
 
-              <View style={styles.controls}>
-                <TouchableOpacity onPress={() => handleQuantityChange(item, -1)} style={styles.controlBtn}>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={() => handleQuantityChange(item, -1)} style={styles.controlBtn}>
                   <Text style={styles.btnText}>−</Text>
-                </TouchableOpacity>
+                  </TouchableOpacity>
 
-                <Text style={styles.quantity}>{item.quantity}</Text>
+                  <Text style={styles.quantity}>{item.quantity}</Text>
 
-                <TouchableOpacity onPress={() => handleQuantityChange(item, 1)} style={styles.controlBtn}>
-                  <Text style={styles.btnText}>+</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleQuantityChange(item, 1)} style={styles.controlBtn}>
+                    <Text style={styles.btnText}>+</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-           )}
-         />
-        )}
-    </View>
+            )}
+          />
+          <View style={styles.totalWrapper}>
+            <Text style={styles.totalText}>Total: ${total.toFixed(2)}</Text>
+          </View>
+          </>
+          )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -133,4 +142,17 @@ const styles = StyleSheet.create({
   quantity: { 
     fontSize: 16, 
   },
+  totalWrapper: {
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+    marginTop: 8,
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+
 });
