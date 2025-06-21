@@ -63,7 +63,7 @@ export default function CartScreen() {
             )}
           />
           <View style={styles.totalWrapper}>
-            <Text style={styles.totalText}>Total: ${total.toFixed(2)}</Text>
+            <Text style={[styles.totalText, { color: colors.text }]}>Total: ${total.toFixed(2)}</Text>
           </View>
           </>
           )}
