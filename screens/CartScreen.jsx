@@ -3,6 +3,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem, updateQuantity } from '../redux/cartSlice';
 
+import { darkTheme, lightTheme } from '@/constants/themeColors';
+import { useTheme } from '@/contexts/ThemeContext';
+
+
 export default function CartScreen() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -16,14 +20,17 @@ export default function CartScreen() {
       dispatch(updateQuantity({ id: item.id, quantity: newQuantity }));
     }
   };
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-    <View style={styles.container}>
-      <Text style={styles.header}>Your Cart</Text>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.header, { color: colors.text }]}>Your Cart</Text>
       
       {cart.length === 0 ? (
-        <Text style={styles.empty}>Your cart is empty.</Text>
+        <Text style={[styles.empty, { color: colors.text }]}>Your cart is empty.</Text>
       ) : (
         <FlatList
           data={cart}
@@ -59,7 +66,6 @@ export default function CartScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
   },
   container: {
     flex: 1,
@@ -73,7 +79,6 @@ const styles = StyleSheet.create({
   },
   empty: {
     fontSize: 16,
-    color: '#777',
     textAlign: 'center',
     marginTop: 100,
   },

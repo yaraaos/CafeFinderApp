@@ -1,9 +1,12 @@
 //screen/DessertsScreen.jsx
 
+import { darkTheme, lightTheme } from '@/constants/themeColors';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+
 import FilterSortBar from '../components/FilterSortBar';
 import ItemsCard from '../components/ItemsCard';
 import SearchBar from '../components/SearchBar';
@@ -15,6 +18,9 @@ export default function DessertsScreen() {
   const [desserts, setDesserts] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
 
   useEffect(() => {
     fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=Dessert')
@@ -58,7 +64,7 @@ export default function DessertsScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <SearchBar
         value={searchQuery}
         onChangeText={setSearchQuery}

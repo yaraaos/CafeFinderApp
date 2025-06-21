@@ -1,7 +1,9 @@
 // app/(drawer)/_layout.jsx
 
 import ThemeToggle from '@/components/ThemeToggle';
-import { ThemeProvider } from '@/contexts/ThemeContext';
+import { darkTheme, lightTheme } from '@/constants/themeColors';
+import { useTheme } from '@/contexts/ThemeContext';
+
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
@@ -10,19 +12,31 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import FloatingCartButton from '../../components/FloatingCartBtn';
 
 export default function DrawerLayout() {
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
   return (
 <GestureHandlerRootView style={{ flex: 1 }}>
   <View style={styles.container}>
-    <ThemeProvider>
       <Drawer
         screenOptions={{
           headerShown: false,
-          drawerActiveTintColor: '#578600',
           swipeEnabled: true,
           drawerType: 'front',
+          drawerStyle: {
+            backgroundColor: colors.background,
+          },
+          drawerLabelStyle: {
+            color: colors.text,
+          },
+          drawerActiveTintColor: colors.accent,
+          drawerInactiveTintColor: colors.text, 
         }}
         drawerContent={(props) => (
-          <DrawerContentScrollView {...props}>
+          <DrawerContentScrollView 
+            {...props}
+            contentContainerStyle={{ backgroundColor: colors.background}}
+          >
             <DrawerItemList {...props} />
             <ThemeToggle />
           </DrawerContentScrollView>
@@ -58,7 +72,6 @@ export default function DrawerLayout() {
           }}
         />
       </Drawer>
-    </ThemeProvider>
 
     <FloatingCartButton />
   </View>

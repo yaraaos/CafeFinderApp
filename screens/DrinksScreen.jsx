@@ -1,9 +1,12 @@
 //screen/DrinksScreen.jsx
 
+import { darkTheme, lightTheme } from '@/constants/themeColors';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+
 import FilterSortBar from '../components/FilterSortBar';
 import ItemsCard from '../components/ItemsCard';
 import SearchBar from '../components/SearchBar';
@@ -16,6 +19,9 @@ export default function DrinksScreen() {
   const [drinks, setDrinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
+
 
   useEffect(() => {
     fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=coffee')
@@ -60,7 +66,7 @@ export default function DrinksScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <SearchBar
         value={searchQuery}
         onChangeText={setSearchQuery}

@@ -16,6 +16,9 @@ export default function CafesScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersActive, setFiltersActive] = useState(false);
   const [selectedCafe, setSelectedCafe] = useState(null);
+  
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
 
   const router = useRouter();
 
@@ -66,7 +69,7 @@ export default function CafesScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <SearchBar
         value={searchQuery}
         onChangeText={setSearchQuery}
