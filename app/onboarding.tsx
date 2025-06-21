@@ -10,9 +10,7 @@ export default function OnboardingScreen() {
 
   const images = [
   'https://images.unsplash.com/photo-1555396273-367ea4eb4db5',
-  'https://images.unsplash.com/photo-1525385133513-3b63f61f3162',
   'https://images.unsplash.com/photo-1509042239860-f550ce710b93',
-  'https://images.unsplash.com/photo-1600880292089-90a7e086ee1a',
   ];
 
   const [index, setIndex] = useState(0);
@@ -21,7 +19,7 @@ export default function OnboardingScreen() {
     const imageCount = images.length;
     const interval = setInterval(() => {
         setIndex((prev) => (prev + 1) % imageCount);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [images.length]);
