@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../redux/cartSlice';
 
 import ItemsCard from '@/components/ItemsCard';
-import MainPageBar from '@/components/MainPageBar';
 import SearchBar from '@/components/SearchBar';
 import CafeCard from '../../../components/CafeCard';
 import CafeMenuModal from '../../../components/CafeMenuModal';
@@ -35,9 +34,6 @@ export default function Index() {
   const [error, setError] = useState<string|null>(null);
   
   const router = useRouter();
-  const handleCategorySelect = (category: string) => {
-    router.push(`/${category.toLowerCase()}`);
-  };
 
   type RootDrawerParamList = {
   '(tabs)': undefined;
@@ -84,10 +80,23 @@ export default function Index() {
     price?: number;
   }[];
 
-  const discoverNewCafes = useMemo(() => [
-    { id: '103', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },
-    { id: '104', name: 'Urban Brew', address: 'City Center', image: 'https://images.unsplash.com/photo-1615322958568-7928d3291f7a' },
-  ], []);
+  const [discoverNewCafes, setDiscoverCafes] = useState<
+    { id: string; name: string; address: string; image: string }[]
+  >([]);
+
+  useEffect(() => {
+    fetchBreweries('', 1, 10) 
+      .then((data) => {
+        const cafes = data.map((item) => ({
+          id: item.id,
+          name: item.name,
+          address: `${item.street || ''}, ${item.city}`,
+          image: item.image_url || `https://picsum.photos/seed/${item.id}/300/300`,
+        }));
+        setDiscoverCafes(cafes);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   useEffect(() => {
     fetchBreweries('Berlin', 1, 30)
@@ -140,7 +149,6 @@ export default function Index() {
             placeholder="What would you like to drink?"
           />
         </View>
-        <MainPageBar onSelect={handleCategorySelect} />
 
         {/* cafes section */}
         <View style={styles.sectionHeader}>
