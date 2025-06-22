@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# CafeFinderApp ☕📍
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 📝 Опис
 
-## Get started
+CafeFinderApp — мобільний застосунок, що допомагає користувачам знаходити кафе поблизу, переглядати їх меню, додавати улюблені напої та десерти до кошика або в список обраного. Застосунок створено за допомогою React Native, Expo Router, Redux Toolkit, Context API.
 
-1. Install dependencies
+## ✨ Нові функції та зміни
 
-   ```bash
-   npm install
-   ```
+- 🔄 **Редизайн головного екрану**: категорії (Кафе, Напої, Десерти) були видалені, залишаємо тільки у табу, додані горизонтальні каруселі, секцію "Last Orders", яка показує останні замовлення користувача.
+- 🧭 **Onboarding-екран**: з циклічними зображеннями кав'ярень.
+- 🌙 **Темна та світла тема**: перемикається за допомогою Context API.
+- ❤️ **Список обраного**: окремі секції для кафе та товарів. Можливість перегляду та додавання в кошик.
+- 🛒 **Кошик**:
+  - Відображення товарів із кількістю, цінами та загальною сумою.
+  - Додавання/зменшення кількості.
+  - Кнопка Checkout з переходом на екран "Дякуємо".
+- ✅ **Екран "Thank you"**: випадковий час приготування + збереження останніх замовлень (максимум 10).
+- 🗂️ **Фільтрація та сортування**:
+  - Пошук у реальному часі.
+  - Сортування по ціні та назві (в десертах/напоях/кафе).
+  - Фільтри та кнопка "Map".
+- 💬 **Сторінка підтримки**:
+   - Відображає контактну інформацію
+- 📋 **Меню кав'яренб**:
+   - динамічно генерується з випадкових позицій.
+- 🌐 **Інтеграції з API**:
+  - Drinks – TheCocktailDB API
+  - Desserts – TheMealDB API
+  - Cafes – публічне API з інформацією про пивоварні
 
-2. Start the app
 
-   ```bash
-   npx expo start
-   ```
+⚙️ Структура застосунку
+Вкладена навігація: Tabs + Drawer через expo-router.
 
-In the output, you'll find options to open the app in a
+Контекст для теми (light/dark).
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Redux для управління кошиком, обраними, останніми замовленнями.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Компоненти винесено в папку components для повторного використання.
 
-## Get a fresh project
+Папка screens містить основні екрани.
 
-When you're ready, run:
+Статичні дані + API (TheMealDB, TheCocktailDB, Open Brewery DB) для демонстрації роботи з реальними запитами.
 
-```bash
-npm run reset-project
-```
+🖼️ Скріншоти :
+Онбординг
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+![Onboarding Page 1](./hw%20images/image.png)
+![Onboarding Page 2](./hw%20images/image-1.png)
 
-## Learn more
+Головний екран (Home)
 
-To learn more about developing your project with Expo, look at the following resources:
+![Home before adding last orders](./hw%20images/image-2.png)
+![Home after adding last orders](./hw%20images/image-3.png)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Кошик (Cart)
 
-## Join the community
+![Cart in light mode](./hw%20images/image-5.png)
+![Cart in dark mode](./hw%20images/image-4.png)
 
-Join our community of developers creating universal apps.
+Обране (Favorites)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+![Faves with both cafes and products](./hw%20images/image-6.png)
+![Faves with just one category](./hw%20images/image-7.png)
+
+Меню кав'ярні
+
+![Menu](./hw%20images/image-8.png)
+
+Підтримка (Support)
+
+![Support](./hw%20images/image-9.png)
+
+Дякуємо за замовлення
+
+![Thank you in dark](./hw%20images/image-10.png)
+
+Сортуваня
+
+![Sort](./hw%20images/image-11.png)
+
+
