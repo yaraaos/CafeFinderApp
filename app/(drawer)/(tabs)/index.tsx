@@ -172,19 +172,26 @@ export default function Index() {
             <Text style={styles.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
+        {lastOrders.length === 0 ? (
+          <Text style={[styles.emptyLastOrdersText, { color: colors.text }]}>
+            You will see your orders here
+          </Text>
+        ) : (
         <FlatList
           horizontal
           data={lastOrders}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingLeft: 4}}
-          ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+         
           renderItem={({ item }) => (
             <ItemsCard item={item} onAddToCart={() => dispatch(addItem(item))}
             size='small'
             />
-          )}
+          )} 
+          ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
         />
+        )}
 
         {/* Discover new cafes */}
         <View style={styles.sectionHeader}>
@@ -257,6 +264,14 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 220,
   },
+
+  emptyLastOrdersText: {
+    fontSize: 14,
+    fontStyle: 'italic',
+    paddingHorizontal: 10,
+    paddingTop: 4,
+    paddingBottom: 16,
+ },
 
   lastOrderCard: {
     width: 140,
