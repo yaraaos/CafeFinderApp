@@ -193,8 +193,11 @@ export default function Index() {
           contentContainerStyle={{ paddingLeft: 4}}
          
           renderItem={({ item }) => (
-            <ItemsCard item={item} onAddToCart={() => dispatch(addItem(item))}
-            size='small'
+            <ItemsCard 
+              item={item} 
+              onAddToCart={() => dispatch(addItem(item))}
+              size='small'
+              showFavorite={false}
             />
           )} 
           ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
