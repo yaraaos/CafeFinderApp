@@ -6,9 +6,12 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useCallback, useState } from 'react';
 import CafeCard from '../components/CafeCard';
+import CafeMenuModal from '../components/CafeMenuModal';
 import ItemsCard from '../components/ItemsCard';
 import { addItem } from '../redux/cartSlice';
+
 
 export default function FavoritesScreen() {
   const favorites = useSelector((state) => state.favorites || []);
@@ -18,6 +21,18 @@ export default function FavoritesScreen() {
 
   const favoriteCafes = favorites.filter(item => item.address);
   const favoriteProducts = favorites.filter(item => !item.address);
+  const [selectedCafe, setSelectedCafe] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const showModal = useCallback((cafe) => {
+    setSelectedCafe(cafe);
+    setModalVisible(true);
+  }, []);
+
+  const hideModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
@@ -40,8 +55,8 @@ export default function FavoritesScreen() {
                   contentContainerStyle={styles.horizontalList}
                   ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
                   renderItem={({ item }) => (
-                    <View style={{ width: 220 }}>
-                      <CafeCard cafe={item} />
+                    <View style={styles.cardWrapper}>
+                      <CafeCard cafe={item} onMenuPress={showModal} />
                     </View>
                   )}
                 />
@@ -62,6 +77,11 @@ export default function FavoritesScreen() {
                   renderItem={({ item }) => (
                     <ItemsCard item={item} onAddToCart={() => dispatch(addItem(item))} />
                   )}
+                />
+                <CafeMenuModal
+                  cafe={selectedCafe}
+                  visible={modalVisible}
+                  onClose={hideModal}
                 />
               </>
             )}
