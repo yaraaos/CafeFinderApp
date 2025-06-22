@@ -51,7 +51,7 @@ export default function TabLayout() {
       onPress={() => router.push('/favorites')}
       style={styles.fab}
     >
-      <Ionicons name="star" size={24} color={hasFavorites ? '#facc15' : '#fff'} />
+      <Ionicons name="heart" size={24} color={hasFavorites ? 'red' : '#fff'} />
       </TouchableOpacity>
     </>
   );
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     bottom: 35,
     left: '50%',
     transform: [{ translateX: -28 }],
-    backgroundColor: '#578600',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     borderRadius: 30,
     width: 56,
     height: 56,

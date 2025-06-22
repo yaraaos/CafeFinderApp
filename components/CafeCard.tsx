@@ -1,12 +1,12 @@
 import { toggleFavorite } from '@/redux/favoritesSlice';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Dimensions, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux//store';
 
-const screenHeight = Dimensions.get('window').height;
-const CARD_HEIGHT = screenHeight * 0.3;
+//const screenHeight = Dimensions.get('window').height;
+//const CARD_HEIGHT = screenHeight * 0.3;
 
 export type Cafe = {
   id: string;
@@ -39,25 +39,33 @@ function CafeCard({ cafe, onMenuPress = () => {} }: CafeCardProps) {
 
   return (
     <View style={styles.card}>
-      <Image source={{ uri: cafe.image }} style={styles.image} />
-      <View style={styles.textContainer}>
-        <Text style={styles.name}>{cafe.name}</Text>
-        <Text style={styles.address}>{cafe.address}</Text>
-
-        <View style={styles.buttonRow}>
-          <Pressable onPress={() => onMenuPress(cafe)} style={styles.menuButton}>
-            <Text style={styles.menuButtonText}>See Menu</Text>
-          </Pressable>
-
-          <Pressable onPress={handleAddToFaves} style={styles.faveButton}>
-            <Ionicons
-              name={isFavorite ? 'star' : 'star-outline'}
-              size={22}
-              color={isFavorite ? '#facc15' : '#333'}
-            />
-          </Pressable>
-        </View>
+      {/* Cafe Image with Heart Icon */}
+      <View style={styles.imageWrapper}>
+        <Image source={{ uri: cafe.image }} style={styles.image} />
+        <TouchableOpacity style={styles.heartIcon} onPress={handleAddToFaves}>
+          <Ionicons
+            name={isFavorite ? 'heart' : 'heart-outline'}
+            size={20}
+            color={isFavorite ? 'red' : '#fff'}
+          />
+        </TouchableOpacity>
       </View>
+
+      {/* Info */}
+      <View style={styles.info}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
+          {cafe.name}
+        </Text>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.address}>
+          {cafe.address}
+        </Text>
+
+        <TouchableOpacity style={styles.menuBtn} onPress={() => onMenuPress?.(cafe)}>
+          <Text style={styles.menuBtnText}>See menu</Text>
+        </TouchableOpacity>
+      </View>
+
+      
     </View>
   );
 }
@@ -69,12 +77,11 @@ export default React.memo(CafeCard);
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
-    height: CARD_HEIGHT,
+    width: '100%',
+    backgroundColor: '#fff',
     borderRadius: 12,
     overflow: 'hidden',
-    marginHorizontal: 4,
-    backgroundColor: '#fff',
+    marginRight: 16,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -87,50 +94,48 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  imageWrapper: {
+    position: 'relative',
+  },
   image: {
     width: '100%',
-    height: '65%',
+    height: 190,
   },
-  textContainer: {
+  heartIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    padding: 6,
+    borderRadius: 20,
+  },
+  info: {
     padding: 12,
-    height: '30%',
   },
   name: {
-    fontSize: 15.5,
-    fontWeight: 'bold',
+    flex: 1,
+    fontWeight: '600',
+    fontSize: 16,
+    marginRight: 8,
+    color: '#000',
   },
   address: {
     fontSize: 13,
     color: '#666',
-    marginTop: 4,
+    paddingBottom: 10,
   },
-  buttonRow: {
-    flexDirection: 'row',
-    marginTop: 12,
-    gap: 8,
-  },
-  menuButton: {
-    flex: 5,
-    paddingVertical: 0,
-    paddingHorizontal: 12,
-    marginBottom: 4,
-    backgroundColor: '#ff914d',
+  menuBtn: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     borderRadius: 8,
     alignItems: 'center',
-    justifyContent: 'center'
+    borderColor: "#578600",
+    borderWidth: 1,
   },
-  menuButtonText: {
-    color: '#fff',
+  menuBtnText: {
+    color: '#578600',
     fontWeight: '600',
     fontSize: 14,
-  },
-  faveButton: {
-    flex: 1,
-    paddingVertical: 3,
-    backgroundColor: '#fff',
-    marginBottom: 4,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

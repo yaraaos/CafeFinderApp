@@ -90,7 +90,7 @@ export default function Index() {
   ], []);
 
   useEffect(() => {
-    fetchBreweries('Odessa', 1, 30)
+    fetchBreweries('Berlin', 1, 30)
       .then((data) => {
       setBreweries(data);
       setLoading(false);

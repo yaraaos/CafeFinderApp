@@ -4,7 +4,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CafeCard from '../components/CafeCard';
@@ -91,7 +91,9 @@ export default function CafesScreen() {
         contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
-          <CafeCard cafe={item} onMenuPress={showModal} />
+          <View style={{ width: 196, margin: 6}}>
+            <CafeCard cafe={item} onMenuPress={showModal} />
+          </View>
         )}
       />
 
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
   },
   row: {
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: 6,
     marginBottom: 16,
   },
 });
