@@ -2,43 +2,72 @@
 
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
-import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CafeCard from '../components/CafeCard';
+import ItemsCard from '../components/ItemsCard';
+import { addItem } from '../redux/cartSlice';
 
 export default function FavoritesScreen() {
-  const favorites = useSelector((state) => state.favorites);
+  const favorites = useSelector((state) => state.favorites || []);
+  const dispatch = useDispatch();
   const { theme } = useTheme();
   const colors = theme === 'dark' ? darkTheme : lightTheme;
 
+  const favoriteCafes = favorites.filter(item => item.address);
+  const favoriteProducts = favorites.filter(item => !item.address);
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
-        <View style={[styles.container, { backgroundColor: colors.background }]}>
-          {favorites.length === 0 ? (
-            <View style={styles.emptyContainer}>
-                <Text style={[styles.emptyText, { color: colors.text }]}>No favorites yet 🌟</Text>
-            </View>
-          ) : (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        {favorites.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Text style={[styles.emptyText, { color: colors.text }]}>No favorites yet 🌟</Text>
+          </View>
+        ) : (
           <>
-
-            <Text style={[styles.header, { color: colors.text }]}>Your Favorites</Text>
-            <FlatList
-                data={favorites}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={styles.listContainer}
-                renderItem={({ item }) => (
-                    <View style={styles.cardWrapper}>
-                        <CafeCard cafe={item} />
+            {/* Favorite Cafes */}
+            {favoriteCafes.length > 0 && (
+              <>
+                <Text style={[styles.header, { color: colors.text }]}>Favorite Cafes</Text>
+                <FlatList
+                  data={favoriteCafes}
+                  keyExtractor={(item) => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalList}
+                  ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+                  renderItem={({ item }) => (
+                    <View style={{ width: 220 }}>
+                      <CafeCard cafe={item} />
                     </View>
-                )}
-            />
+                  )}
+                />
+              </>
+            )}
+
+            {/* Favorite Products */}
+            {favoriteProducts.length > 0 && (
+              <>
+                <Text style={[styles.header, { color: colors.text, }]}>Favorite Products</Text>
+                <FlatList
+                  data={favoriteProducts}
+                  keyExtractor={(item) => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalList}
+                  ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+                  renderItem={({ item }) => (
+                    <ItemsCard item={item} onAddToCart={() => dispatch(addItem(item))} />
+                  )}
+                />
+              </>
+            )}
           </>
-          )}
-        </View>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -50,7 +79,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 8,
     paddingTop: 24,
   },
   emptyContainer: {
@@ -61,15 +89,14 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 12,
+    paddingHorizontal: 12,
   },
   emptyText: {
     fontSize: 16,
   },
-  listContainer: {
-    padding: 16,
-  },
-  cardWrapper: {
-    marginBottom: 16,
+  horizontalList: {
+    paddingLeft: 12,
+    paddingBottom: 8,
   },
 });
