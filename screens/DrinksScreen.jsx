@@ -3,6 +3,7 @@
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +16,7 @@ import { addItem } from '../redux/cartSlice';
 
 
 export default function DrinksScreen() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersActive, setFiltersActive] = useState(false);
   const [drinks, setDrinks] = useState([]);
@@ -93,7 +95,7 @@ export default function DrinksScreen() {
       <FilterSortBar
         onSortPress={() => setShowSortOptions((prev) => !prev)}
         onFilterPress={() => setFiltersActive(!filtersActive)}
-        onMapPress={() => {}}
+        onMapPress={() => router.push('/map')}
         filtersActive={filtersActive}
       />
       {showSortOptions && (
