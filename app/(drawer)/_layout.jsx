@@ -36,9 +36,9 @@ export default function DrawerLayout() {
           <DrawerContentScrollView 
             {...props}
             contentContainerStyle={{ backgroundColor: colors.background}}
-          >
-            <DrawerItemList {...props} />
+          > 
             <ThemeToggle />
+            <DrawerItemList {...props} /> 
           </DrawerContentScrollView>
         )}
       >

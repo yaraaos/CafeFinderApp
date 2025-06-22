@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Switch, Text, View } from 'react-native';
 import { darkTheme, lightTheme } from '../constants/themeColors';
 import { useTheme } from '../contexts/ThemeContext';
@@ -23,12 +22,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 8,
     borderRadius: 8,
-    marginHorizontal: 16,
-    marginVertical: 8,
+    marginHorizontal: 12,
+    marginBottom: 10,
+    marginTop: 8,
   },
   label: {
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: 500,
+    marginLeft: 2,
   },
 });
