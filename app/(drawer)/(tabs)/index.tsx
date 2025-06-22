@@ -4,11 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, LogBox, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useDispatch } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { addItem } from '../../../redux/cartSlice';
 
 import MainPageBar from '@/components/MainPageBar';
@@ -72,10 +74,14 @@ export default function Index() {
     //{ id: '2', name: 'Dim Kavy', address: 'Nauky Ave, 18', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24' },
   //];
 
-  const lastOrders = [
-    { id: '101', name: 'Latte Machiato', cafe: 'Sweeter', image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D' },
-    { id: '102', name: 'Matcha Latte', cafe: 'Kofein', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWF0Y2hhfGVufDB8fDB8fHww' },
-  ];
+  const lastOrders = useSelector((state: RootState) => state.lastOrders) as {
+    id: string;
+    name: string;
+    image: string;
+    cafe?: string;
+    quantity?: number;
+    price?: number;
+  }[];
 
   const discoverNewCafes = useMemo(() => [
     { id: '103', name: 'Green Coffee', address: 'Main St', image: 'https://images.unsplash.com/photo-1525610553991-2bede1a236e2' },

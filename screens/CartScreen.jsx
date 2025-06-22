@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem, updateQuantity } from '../redux/cartSlice';
-
+import { addOrders } from '../redux/lastOrdersSlice';
 
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -34,6 +35,7 @@ export default function CartScreen() {
           <Text style={[styles.empty, { color: colors.text }]}>Your cart is empty.</Text>
         ) : (
           <>
+           {/*ITEMS IN CART*/}
             <FlatList
               data={cart}
               keyExtractor={(item) => item.id}
@@ -63,13 +65,20 @@ export default function CartScreen() {
                 </View>
               )}
             />
-
+            {/*TOTAL*/}
             <View style={styles.totalWrapper}>
               <Text style={[styles.totalText, { color: colors.text }]}>Total</Text>
               <Text style={[styles.totalText, { color: colors.text }]}>€ {total.toFixed(2)}</Text>
             </View>
 
-            <TouchableOpacity style={styles.checkoutBtn} onPress={() => alert('Checkout')}>
+            {/*CHECKOUT BUTTON*/}
+            <TouchableOpacity 
+              style={styles.checkoutBtn} 
+              onPress={() => {
+                dispatch(addOrders(cart));
+                //dispatch(clearCart());
+                router.push('/thankyou');
+              }}>
               <Text style={styles.checkoutBtnText}>Checkout</Text>
             </TouchableOpacity>
           </>
