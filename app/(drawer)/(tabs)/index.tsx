@@ -5,7 +5,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, LogBox, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, LogBox, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RootState } from '@/redux/store';
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { addItem } from '../../../redux/cartSlice';
 
+import ItemsCard from '@/components/ItemsCard';
 import MainPageBar from '@/components/MainPageBar';
 import SearchBar from '@/components/SearchBar';
 import CafeCard from '../../../components/CafeCard';
@@ -179,24 +180,9 @@ export default function Index() {
           contentContainerStyle={{ paddingLeft: 4}}
           ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
           renderItem={({ item }) => (
-            <View style={styles.lastOrderCard}>
-              <View style={styles.lastOrderImageWrapper}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={styles.lastOrderImage}
-                  resizeMode="cover"
-                />
-              </View>
-              <Text style={styles.orderText}>{item.name}</Text>
-              <Text style={styles.orderSub}>{item.cafe}</Text>
-
-              <TouchableOpacity
-                onPress={() => dispatch(addItem(item))}
-                style={styles.addButton}
-              >
-                <Text style={styles.addButtonText}>Add to Cart</Text>
-              </TouchableOpacity>
-            </View>
+            <ItemsCard item={item} onAddToCart={() => dispatch(addItem(item))}
+            size='small'
+            />
           )}
         />
 

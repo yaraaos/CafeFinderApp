@@ -16,7 +16,7 @@ const lastOrdersSlice = createSlice({
         }
       }
 
-      return unique.slice(0, 10); // Keep max 10 items
+      return unique.slice(0, 8); // Keep max 8 items
     },
   },
 });

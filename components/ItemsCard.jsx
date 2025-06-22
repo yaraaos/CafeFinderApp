@@ -5,20 +5,20 @@ import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'rea
 const screenWidth = Dimensions.get('window').width;
 const CARD_WIDTH = screenWidth / 2 - 24;
 
-export default function ItemsCard({ item, onAddToCart }) {
-  if (!item.name) return null;
+export default function ItemsCard({ item, onAddToCart, size = 'default' }) {
+  const isSmall = size === 'small';
   
   return (
-    <View style={styles.card}>          
+    <View style={[styles.card, isSmall && styles.smallCard]}>         
       
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <Text style={styles.price}>${item.price?.toFixed(2)}</Text>
-      <Text style={styles.name}>{item.name}</Text>
+      <Image source={{ uri: item.image }} style={[styles.image, isSmall && styles.smallImage]} />
+      <Text style={[styles.price, isSmall && styles.smallPrice]}>${item.price?.toFixed(2)}</Text>
+      <Text style={[styles.name, isSmall && styles.smallText]}>{item.name}</Text>
 
       {onAddToCart && (
-        <TouchableOpacity onPress={() => onAddToCart(item)} style={styles.button}>
+        <TouchableOpacity onPress={() => onAddToCart(item)} style={[styles.addButton, isSmall && styles.smallBtn]}>
 
-          <Text style={styles.buttonText}>Add to Cart</Text>
+          <Text style={[styles.buttonText, isSmall && styles.smallBtnText]}>Add to Cart</Text>
           
         </TouchableOpacity>
       )}
@@ -38,21 +38,39 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     justifyContent: 'space-between',
   },
+  smallCard: {
+  width: 120,
+  height: 180,
+  padding: 8,
+},
   image: {
     width: '100%',
     height: 140,
     borderRadius: 8,
     position: 'relative',
   },
+  smallImage: {
+  height: 90,
+},
   name: {
     marginTop: 10,
     fontSize: 15,
     fontWeight: '600',
   },
-  button: {
+  smallText: {
+  fontSize: 13,
+  },
+  addButton: {
     marginTop: 10,
     backgroundColor: '#578600',
     paddingVertical: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  smallBtn: {
+    marginTop: 5,
+    backgroundColor: '#578600',
+    paddingVertical: 6,
     borderRadius: 8,
     alignItems: 'center',
   },
@@ -60,6 +78,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 14,
+  },
+  smallBtnText:{
+    fontSize: 13,
   },
   price: {
     position: 'absolute',
@@ -72,5 +93,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     fontSize: 13,
     fontWeight: '600',
+  },
+  smallPrice: {
+    top: 8,
+    right: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    fontSize: 11,
   },
 });

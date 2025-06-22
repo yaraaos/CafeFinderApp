@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem, updateQuantity } from '../redux/cartSlice';
+import { clearCart, removeItem, updateQuantity } from '../redux/cartSlice';
 import { addOrders } from '../redux/lastOrdersSlice';
 
 import { darkTheme, lightTheme } from '@/constants/themeColors';
@@ -76,7 +76,7 @@ export default function CartScreen() {
               style={styles.checkoutBtn} 
               onPress={() => {
                 dispatch(addOrders(cart));
-                //dispatch(clearCart());
+                dispatch(clearCart());
                 router.push('/thankyou');
               }}>
               <Text style={styles.checkoutBtnText}>Checkout</Text>
