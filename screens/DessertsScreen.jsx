@@ -2,8 +2,9 @@
 
 import { darkTheme, lightTheme } from '@/constants/themeColors';
 import { useTheme } from '@/contexts/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
@@ -43,15 +44,34 @@ export default function DessertsScreen() {
 
   const handleAddToCart = useCallback((item) => {
     dispatch(addItem(item));
-  }, [dispatch]);
+  }, [dispatch]);  
+  
+  const [showSortOptions, setShowSortOptions] = useState(false);
+  const [sortOrder, setSortOrder] = useState(null); // 'asc' or 'desc'
 
-    //filter based on search input
-  const filteredDesserts = useMemo(() => {
-      if (!searchQuery.trim()) return desserts;
-      return desserts.filter((item) =>
+  const filteredAndSortedDesserts = useMemo(() => {
+    let result = [...desserts];
+
+    if (searchQuery.trim()) {
+      result = result.filter((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-  }, [desserts, searchQuery]);
+    }
+
+    if (sortOrder === 'asc') {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortOrder === 'desc') {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortOrder === 'name-asc') {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOrder === 'name-desc') {
+      result.sort((a, b) => b.name.localeCompare(a.name));
+    } 
+
+    return result;
+  }, [desserts, searchQuery, sortOrder]);
+
+
 
   if (loading) {
     return (
@@ -72,13 +92,60 @@ export default function DessertsScreen() {
       />
 
       <FilterSortBar
-        onSortPress={() => alert('Sort coming soon')}
+        onSortPress={() => setShowSortOptions(!showSortOptions)}
         onFilterPress={() => setFiltersActive(!filtersActive)}
         onMapPress={() => {}}
         filtersActive={filtersActive}
-      />        
+      /> 
+            {showSortOptions && (
+          <View style={styles.sortDropdown}>
+            <TouchableOpacity
+              onPress={() => {
+                setSortOrder('asc');
+                setShowSortOptions(false);
+              }}
+              style={styles.sortOption}
+            >
+              <Ionicons name="arrow-up-outline" size={16} style={styles.icon} />
+              <Text style={{ color: colors.text }}>Price: Low to High</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setSortOrder('desc');
+                setShowSortOptions(false);
+              }}
+              style={styles.sortOption}
+            >
+              <Ionicons name="arrow-down-outline" size={16} style={styles.icon} />
+              <Text style={{ color: colors.text }}>Price: High to Low</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setSortOrder('name-asc');
+                setShowSortOptions(false);
+              }}
+              style={styles.sortOption}
+            >
+              <Ionicons name="arrow-up-outline" size={16} style={styles.icon} />
+              <Text style={{ color: colors.text }}>Name: A to Z</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setSortOrder('name-desc');
+                setShowSortOptions(false);
+              }}
+              style={styles.sortOption}
+            >
+              <Ionicons name="arrow-down-outline" size={16} style={styles.icon} />
+              <Text style={{ color: colors.text }}>Name: Z to A</Text>
+            </TouchableOpacity>
+        </View>
+      )}
+       
       <FlatList
-        data={filteredDesserts}
+        data={filteredAndSortedDesserts}
         keyExtractor={(item) => item.id}
         numColumns={2}
         columnWrapperStyle={styles.row}
@@ -106,5 +173,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     marginBottom: 16,
+  },
+  sortDropdown: {
+    position: 'absolute',
+    top: 155,
+    left: 16,
+    right: 16,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 12,
+    zIndex: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  sortOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  icon: {
+    marginRight: 8,
   },
 });
